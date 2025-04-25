@@ -1,10 +1,7 @@
 package net.crayonsmp;
 
-import net.crayonsmp.commands.TestCommand;
-import org.bukkit.Bukkit;
+import net.crayonsmp.commands.ModulesCommand;
 import org.bukkit.plugin.Plugin;
-
-import java.util.Objects;
 
 public class Main implements CrayonModule {
 
@@ -14,13 +11,18 @@ public class Main implements CrayonModule {
     }
 
     @Override
+    public String getAuthor() {
+        return "Terrocraft, Villagerzock";
+    }
+
+    @Override
     public void onLoad(CrayonAPI core) {
         core.getLogger().info("Crayon-Defaults loaded!");
     }
 
     @Override
-    public void onEnable(Plugin plugin) {
-        Objects.requireNonNull(registerCommand("newCommand",plugin)).setExecutor(new TestCommand());
+    public <API extends Plugin & CrayonAPI> void onEnable(API plugin) {
+        registerCommand("modules",plugin).setExecutor(new ModulesCommand(plugin));
     }
 
     @Override

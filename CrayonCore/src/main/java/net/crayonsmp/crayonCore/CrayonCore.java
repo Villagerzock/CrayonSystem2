@@ -84,18 +84,6 @@ public class CrayonCore extends JavaPlugin implements CrayonAPI {
             }
         }
         getLogger().info("Finished enabling modules.");
-
-        // Test-Log, um zu prüfen, ob der Command nach onEnable registriert sein sollte
-        if (getServer().getPluginCommand("test") != null) {
-            getLogger().info("Command '/test' seems to be registered by the PluginManager (Executor might be set).");
-            if (getServer().getPluginCommand("test").getExecutor() != null) {
-                getLogger().info("Command '/test' has an executor assigned: " + getServer().getPluginCommand("test").getExecutor().getClass().getName());
-            } else {
-                getLogger().warning("Command '/test' is registered, but has NO executor assigned!");
-            }
-        } else {
-            getLogger().warning("Command '/test' is NOT registered in the PluginManager after module enabling!");
-        }
     }
 
     @Override
@@ -115,4 +103,8 @@ public class CrayonCore extends JavaPlugin implements CrayonAPI {
         getLogger().info("Finished disabling modules.");
     }
 
+    @Override
+    public List<CrayonModule> loadedModules() {
+        return loadedModules;
+    }
 }
