@@ -14,25 +14,12 @@
 
     <artifactId>crayon-defaults</artifactId>
 
-    <repositories>
-        <repository>
-            <id>sonatype</id>
-            <url>https://oss.sonatype.org/content/groups/public/</url>
-        </repository>
-    </repositories>
 
     <dependencies>
-        <!-- Nur die API, nicht das Core-Plugin! -->
         <dependency>
             <groupId>net.crayonsmp</groupId>
             <artifactId>CrayonAPI</artifactId>
             <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.papermc.paper</groupId>
-            <artifactId>paper-api</artifactId>
-            <version>1.21.4-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

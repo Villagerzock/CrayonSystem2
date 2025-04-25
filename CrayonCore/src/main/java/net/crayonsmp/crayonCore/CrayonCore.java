@@ -2,6 +2,8 @@ package net.crayonsmp.crayonCore;
 
 import net.crayonsmp.CrayonAPI;
 import net.crayonsmp.interfaces.CrayonModule;
+import net.crayonsmp.utils.config.ConfigUtil;
+import net.crayonsmp.utils.config.SConfig;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
 
@@ -14,50 +16,20 @@ import java.util.logging.Level;
 public class CrayonCore extends JavaPlugin implements CrayonAPI {
 
     private final List<CrayonModule> loadedModules = new ArrayList<>();
-
-    @Override
-    public void onLoad() {
-        getLogger().info("Loading CrayonCore...");
-        getLogger().info("Scanning for modules...");
-
-        String modulePackage = "net.crayonsmp";
-
-        Reflections reflections;
-        try {
-            reflections = new Reflections(modulePackage);
-        } catch (Throwable t) {
-            if (isDebugMode()) getLogger().log(Level.SEVERE, "Failed to initialize Reflections for package: " + modulePackage, t);
-            return;
-        }
-
-        Set<Class<? extends CrayonModule>> moduleClasses = reflections.getSubTypesOf(CrayonModule.class);
-        if (isDebugMode()) getLogger().info("Found " + moduleClasses.size() + " potential module classes in package: " + modulePackage);
-
-        for (Class<? extends CrayonModule> moduleClass : moduleClasses) {
-            String moduleClassName = moduleClass.getName();
-            getLogger().info("Attempting to load module class: " + moduleClassName);
-            try {
-                if (isDebugMode()) getLogger().info("  Instantiating " + moduleClassName + "...");
-                CrayonModule module = moduleClass.getDeclaredConstructor().newInstance();
-                if (isDebugMode()) getLogger().info("  Successfully instantiated " + moduleClassName);
-
-                if (isDebugMode()) getLogger().info("  Calling onLoad() for " + module.getName() + " (" + moduleClassName + ")...");
-                module.onLoad(this);
-                if (isDebugMode()) getLogger().info("  Finished onLoad() for " + module.getName());
-
-                if (isDebugMode()) getLogger().info("  Adding " + module.getName() + " to loaded modules list...");
-                loadedModules.add(module);
-                if (isDebugMode()) getLogger().info("  Successfully loaded and processed module: " + module.getName());
-
-            } catch (Throwable e) {
-                getLogger().log(Level.SEVERE, "!!! CRITICAL FAILURE loading module: " + moduleClassName + " !!!", e);
-            }
-        }
-        getLogger().info("Finished module loading sequence. Total modules loaded: " + loadedModules.size());
-    }
+    private static SConfig config;
 
     @Override
     public void onEnable() {
+        config = ConfigUtil.getConfig("config", this);
+
+        if (!config.getFile().isFile()) {
+            getLogger().info("Config file not found. Creating new one...");
+            config.setDefault("prefix", "&8[&bCrayon&8]&r ");
+            config.setDefault("debugmode", false);
+            config.setDefault("modules.blacklist", new ArrayList<>());
+            config.save();
+        }
+
         getLogger().info("Enabling CrayonCore...");
         getLogger().info("Number of loaded modules to enable: " + loadedModules.size());
 
@@ -97,12 +69,64 @@ public class CrayonCore extends JavaPlugin implements CrayonAPI {
     }
 
     @Override
+    public void onLoad() {
+        getLogger().info("Loading CrayonCore...");
+        getLogger().info("Scanning for modules...");
+
+        String modulePackage = "net.crayonsmp";
+
+        Reflections reflections;
+        try {
+            reflections = new Reflections(modulePackage);
+        } catch (Throwable t) {
+            if (isDebugMode()) getLogger().log(Level.SEVERE, "Failed to initialize Reflections for package: " + modulePackage, t);
+            return;
+        }
+
+        Set<Class<? extends CrayonModule>> moduleClasses = reflections.getSubTypesOf(CrayonModule.class);
+        if (isDebugMode()) getLogger().info("Found " + moduleClasses.size() + " potential module classes in package: " + modulePackage);
+
+        for (Class<? extends CrayonModule> moduleClass : moduleClasses) {
+            String moduleClassName = moduleClass.getName();
+            getLogger().info("Attempting to load module class: " + moduleClassName);
+            try {
+                if (isDebugMode()) getLogger().info("  Instantiating " + moduleClassName + "...");
+                CrayonModule module = moduleClass.getDeclaredConstructor().newInstance();
+
+                if (config.getStringList("modules.blacklist").contains(module.getName())) {
+                    if (isDebugMode()) getLogger().info("   Module: " + module.getName() + " skipping to load, is on the blacklist...");
+                    return;
+                }
+
+                if (isDebugMode()) getLogger().info("  Successfully instantiated " + moduleClassName);
+
+                if (isDebugMode()) getLogger().info("  Calling onLoad() for " + module.getName() + " (" + moduleClassName + ")...");
+                module.onLoad(this);
+                if (isDebugMode()) getLogger().info("  Finished onLoad() for " + module.getName());
+
+                if (isDebugMode()) getLogger().info("  Adding " + module.getName() + " to loaded modules list...");
+                loadedModules.add(module);
+                if (isDebugMode()) getLogger().info("  Successfully loaded and processed module: " + module.getName());
+
+            } catch (Throwable e) {
+                getLogger().log(Level.SEVERE, "!!! CRITICAL FAILURE loading module: " + moduleClassName + " !!!", e);
+            }
+        }
+        getLogger().info("Finished module loading sequence. Total modules loaded: " + loadedModules.size());
+    }
+
+    @Override
     public List<CrayonModule> loadedModules() {
         return loadedModules;
     }
 
     @Override
     public Boolean isDebugMode() {
-        return true;
+        return config.getBoolean("debugmode");
+    }
+
+    @Override
+    public String getPrefix() {
+        return config.getString("prefix") != null ? config.getString("prefix") : "&8[&bCrayon&8]&r ";
     }
 }
