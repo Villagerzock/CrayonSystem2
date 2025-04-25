@@ -1,0 +1,8 @@
+name: CrayonCore
+version: '1.0-crayon'
+main: net.crayonsmp.crayonCore.CrayonCore
+api-version: '1.21'
+prefix: [CS]
+authors: [Terrocraft, ElementalsStudio]
+description: This plugin is the CrayonSystem.
+commands:
