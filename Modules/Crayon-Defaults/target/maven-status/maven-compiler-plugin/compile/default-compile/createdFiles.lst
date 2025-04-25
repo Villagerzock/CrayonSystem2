@@ -1,2 +1,2 @@
-net/crayonsmp/Main.class
-net/crayonsmp/commands/TestCommand.class
+net\crayonsmp\commands\ModulesCommand.class
+net\crayonsmp\Main.class
