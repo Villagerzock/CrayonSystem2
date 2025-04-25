@@ -1,7 +1,7 @@
 package net.crayonsmp.crayonCore;
 
 import net.crayonsmp.CrayonAPI;
-import net.crayonsmp.CrayonModule;
+import net.crayonsmp.interfaces.CrayonModule;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
 

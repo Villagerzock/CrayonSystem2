@@ -1,6 +1,6 @@
 package net.crayonsmp;
 
-import org.checkerframework.checker.units.qual.C;
+import net.crayonsmp.interfaces.CrayonModule;
 
 import java.util.List;
 import java.util.logging.Logger;

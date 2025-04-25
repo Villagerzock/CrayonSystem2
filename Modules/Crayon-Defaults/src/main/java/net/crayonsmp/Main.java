@@ -1,6 +1,7 @@
 package net.crayonsmp;
 
 import net.crayonsmp.commands.ModulesCommand;
+import net.crayonsmp.interfaces.CrayonModule;
 import org.bukkit.plugin.Plugin;
 
 public class Main implements CrayonModule {

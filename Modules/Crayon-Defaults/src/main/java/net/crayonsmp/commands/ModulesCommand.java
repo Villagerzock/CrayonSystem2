@@ -1,7 +1,7 @@
 package net.crayonsmp.commands;
 
 import net.crayonsmp.CrayonAPI;
-import net.crayonsmp.CrayonModule;
+import net.crayonsmp.interfaces.CrayonModule;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.command.Command;
