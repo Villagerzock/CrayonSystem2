@@ -2,9 +2,14 @@ package net.crayonsmp.crayonCore;
 
 import net.crayonsmp.CrayonAPI;
 import net.crayonsmp.CrayonModule;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandMap;
+import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
 
+import java.io.BufferedReader;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -95,6 +100,19 @@ public class CrayonCore extends JavaPlugin implements CrayonAPI {
             }
         } else {
             getLogger().warning("Command '/test' is NOT registered in the PluginManager after module enabling!");
+        }
+        if (Bukkit.getPluginManager() instanceof SimplePluginManager pluginManager){
+            try {
+                Field commandMapField = pluginManager.getClass().getDeclaredField("commandMap");
+                commandMapField.setAccessible(true);
+                CommandMap commandMap = (CommandMap) commandMapField.get(pluginManager);
+                getLogger().info("Here are All Known Commands: ");
+                for (String commandName : ((CommandMap) commandMapField.get(pluginManager)).getKnownCommands().keySet()){
+                    getLogger().info(" - " + commandName);
+                }
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

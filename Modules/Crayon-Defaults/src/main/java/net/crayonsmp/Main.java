@@ -10,7 +10,7 @@ public class Main implements CrayonModule {
 
     @Override
     public String getName() {
-        return "Crayon-Defaults";
+        return "Crayon Defaults";
     }
 
     @Override
@@ -20,11 +20,6 @@ public class Main implements CrayonModule {
 
     @Override
     public void onEnable(Plugin plugin) {
-        Objects.requireNonNull(registerCommand("newCommand",plugin)).setExecutor(new TestCommand());
-    }
-
-    @Override
-    public void onDisable() {
-        // Aufräumen
+        registerCommand("newCommand",plugin).setExecutor(new TestCommand());
     }
 }
