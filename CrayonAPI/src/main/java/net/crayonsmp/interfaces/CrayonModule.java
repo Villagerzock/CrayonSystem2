@@ -16,6 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public interface CrayonModule {
     String getName();
+    String getVersion();
     default String getAuthor(){return "";}
     void onLoad(CrayonAPI api); // oder einfach kein Parameter
     <API extends Plugin & CrayonAPI> void onEnable(API plugin);

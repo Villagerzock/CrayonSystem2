@@ -13,6 +13,9 @@ public class Main implements CrayonModule {
     }
 
     @Override
+    public String getVersion() { return "0.0.1"; }
+
+    @Override
     public String getAuthor() {
         return "Terrocraft, Villagerzock";
     }
