@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 public interface CrayonAPI {
     Logger getLogger();
     List<CrayonModule> loadedModules();
+    Boolean isDebugMode();
     // Weitere Methoden, die Module aufrufen können
 }
 

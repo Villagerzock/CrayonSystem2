@@ -20,42 +20,37 @@ public class CrayonCore extends JavaPlugin implements CrayonAPI {
         getLogger().info("Loading CrayonCore...");
         getLogger().info("Scanning for modules...");
 
-        String modulePackage = "net.crayonsmp"; // <--- HIER ANPASSEN!
+        String modulePackage = "net.crayonsmp";
 
         Reflections reflections;
         try {
             reflections = new Reflections(modulePackage);
         } catch (Throwable t) {
-            getLogger().log(Level.SEVERE, "Failed to initialize Reflections for package: " + modulePackage, t);
-            return; // Ohne Reflections können keine Module geladen werden
+            if (isDebugMode()) getLogger().log(Level.SEVERE, "Failed to initialize Reflections for package: " + modulePackage, t);
+            return;
         }
 
         Set<Class<? extends CrayonModule>> moduleClasses = reflections.getSubTypesOf(CrayonModule.class);
-        getLogger().info("Found " + moduleClasses.size() + " potential module classes in package: " + modulePackage);
+        if (isDebugMode()) getLogger().info("Found " + moduleClasses.size() + " potential module classes in package: " + modulePackage);
 
         for (Class<? extends CrayonModule> moduleClass : moduleClasses) {
             String moduleClassName = moduleClass.getName();
             getLogger().info("Attempting to load module class: " + moduleClassName);
             try {
-                // 1. Instanziieren (stellt sicher, dass es einen öffentlichen Standardkonstruktor gibt)
-                getLogger().info("  Instantiating " + moduleClassName + "...");
+                if (isDebugMode()) getLogger().info("  Instantiating " + moduleClassName + "...");
                 CrayonModule module = moduleClass.getDeclaredConstructor().newInstance();
-                getLogger().info("  Successfully instantiated " + moduleClassName);
+                if (isDebugMode()) getLogger().info("  Successfully instantiated " + moduleClassName);
 
-                // 2. Modul onLoad aufrufen
-                getLogger().info("  Calling onLoad() for " + module.getName() + " (" + moduleClassName + ")...");
-                module.onLoad(this); // Ruft die onLoad in der Modulklasse (z.B. Main.java) auf
-                getLogger().info("  Finished onLoad() for " + module.getName());
+                if (isDebugMode()) getLogger().info("  Calling onLoad() for " + module.getName() + " (" + moduleClassName + ")...");
+                module.onLoad(this);
+                if (isDebugMode()) getLogger().info("  Finished onLoad() for " + module.getName());
 
-                // 3. Zur Liste hinzufügen
-                getLogger().info("  Adding " + module.getName() + " to loaded modules list...");
+                if (isDebugMode()) getLogger().info("  Adding " + module.getName() + " to loaded modules list...");
                 loadedModules.add(module);
-                getLogger().info("  Successfully loaded and processed module: " + module.getName());
+                if (isDebugMode()) getLogger().info("  Successfully loaded and processed module: " + module.getName());
 
-            } catch (Throwable e) { // Fange Throwable, um alle Fehler (auch Errors) zu erwischen
-                // Logge den Fehler ausführlich
+            } catch (Throwable e) {
                 getLogger().log(Level.SEVERE, "!!! CRITICAL FAILURE loading module: " + moduleClassName + " !!!", e);
-                // Fahre mit dem nächsten Modul fort, anstatt komplett abzubrechen
             }
         }
         getLogger().info("Finished module loading sequence. Total modules loaded: " + loadedModules.size());
@@ -72,15 +67,13 @@ public class CrayonCore extends JavaPlugin implements CrayonAPI {
 
         for (CrayonModule module : loadedModules) {
             String moduleName = module.getName();
-            getLogger().info("Attempting to enable module: " + moduleName + " (" + module.getClass().getName() + ")");
+            if (isDebugMode()) getLogger().info("Attempting to enable module: " + moduleName + " (" + module.getClass().getName() + ")");
             try {
-                // Modul onEnable aufrufen (hier wird der Command registriert)
-                module.onEnable(this); // Übergibt das CrayonCore Plugin-Objekt
+                module.onEnable(this);
                 getLogger().info("Successfully enabled module: " + moduleName);
 
-            } catch (Throwable e) { // Auch hier Throwable fangen
+            } catch (Throwable e) {
                 getLogger().log(Level.SEVERE, "!!! CRITICAL FAILURE enabling module: " + moduleName + " !!!", e);
-                // Optional: Modul aus der Liste entfernen oder als 'deaktiviert' markieren
             }
         }
         getLogger().info("Finished enabling modules.");
@@ -92,19 +85,24 @@ public class CrayonCore extends JavaPlugin implements CrayonAPI {
         getLogger().info("Number of loaded modules to disable: " + loadedModules.size());
         for (CrayonModule module : loadedModules) {
             try {
-                getLogger().info("Disabling module: " + module.getName());
+                if (isDebugMode()) getLogger().info("Disabling module: " + module.getName());
                 module.onDisable();
                 getLogger().info("Successfully disabled module: " + module.getName());
             } catch (Throwable e) {
                 getLogger().log(Level.SEVERE,"Error disabling module " + module.getName(), e);
             }
         }
-        loadedModules.clear(); // Liste leeren
+        loadedModules.clear();
         getLogger().info("Finished disabling modules.");
     }
 
     @Override
     public List<CrayonModule> loadedModules() {
         return loadedModules;
+    }
+
+    @Override
+    public Boolean isDebugMode() {
+        return true;
     }
 }
