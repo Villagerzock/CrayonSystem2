@@ -10,6 +10,5 @@ public interface CrayonAPI {
     List<CrayonModule> loadedModules();
     Boolean isDebugMode();
     String getPrefix();
-    // Weitere Methoden, die Module aufrufen können
 }
 
