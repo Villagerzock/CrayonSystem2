@@ -1,3 +1,2 @@
-net\crayonsmp\CrayonAPI.class
-net\crayonsmp\CrayonModule.class
-net\crayonsmp\Util.class
+net/crayonsmp/CrayonModule.class
+net/crayonsmp/CrayonAPI.class

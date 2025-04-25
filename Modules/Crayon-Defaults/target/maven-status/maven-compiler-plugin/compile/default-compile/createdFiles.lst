@@ -1,2 +1,2 @@
-net\crayonsmp\commands\TestCommand.class
-net\crayonsmp\Main.class
+net/crayonsmp/Main.class
+net/crayonsmp/commands/TestCommand.class
