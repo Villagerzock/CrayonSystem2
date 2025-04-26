@@ -1,6 +1,0 @@
-net/crayonsmp/events/DebugEvent.class
-net/crayonsmp/utils/config/SConfig.class
-net/crayonsmp/utils/ItemBuilder.class
-net/crayonsmp/CrayonAPI.class
-net/crayonsmp/interfaces/CrayonModule.class
-net/crayonsmp/utils/config/ConfigUtil.class
