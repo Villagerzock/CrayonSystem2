@@ -26,7 +26,6 @@ public interface CrayonModule {
             Constructor<PluginCommand> pluginCommandConstructor = PluginCommand.class.getDeclaredConstructor(String.class,Plugin.class);
             pluginCommandConstructor.setAccessible(true);
             PluginCommand command = pluginCommandConstructor.newInstance(name,plugin);
-            plugin.getLogger().info("Type: " + Bukkit.getPluginManager().getClass().getCanonicalName());
             if (Bukkit.getPluginManager() instanceof SimplePluginManager pluginManager) {
                 try {
                     Field commandMapField = pluginManager.getClass().getDeclaredField("commandMap");

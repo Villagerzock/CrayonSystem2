@@ -20,15 +20,6 @@ public class CrayonCore extends JavaPlugin implements CrayonAPI {
 
     @Override
     public void onEnable() {
-        config = ConfigUtil.getConfig("config", this);
-
-        if (!config.getFile().isFile()) {
-            getLogger().info("Config file not found. Creating new one...");
-            config.setDefault("prefix", "&8[&bCrayon&8]&r ");
-            config.setDefault("debugmode", false);
-            config.setDefault("modules.blacklist", new ArrayList<>());
-            config.save();
-        }
 
         getLogger().info("Enabling CrayonCore...");
         getLogger().info("Number of loaded modules to enable: " + loadedModules.size());
@@ -42,7 +33,7 @@ public class CrayonCore extends JavaPlugin implements CrayonAPI {
             if (isDebugMode()) getLogger().info("Attempting to enable module: " + moduleName + " (" + module.getClass().getName() + ")");
             try {
                 module.onEnable(this);
-                getLogger().info("Successfully enabled module: " + moduleName);
+                if (isDebugMode()) getLogger().info("Successfully enabled module: " + moduleName);
 
             } catch (Throwable e) {
                 getLogger().log(Level.SEVERE, "!!! CRITICAL FAILURE enabling module: " + moduleName + " !!!", e);
@@ -59,7 +50,7 @@ public class CrayonCore extends JavaPlugin implements CrayonAPI {
             try {
                 if (isDebugMode()) getLogger().info("Disabling module: " + module.getName());
                 module.onDisable();
-                getLogger().info("Successfully disabled module: " + module.getName());
+                if (isDebugMode()) getLogger().info("Successfully disabled module: " + module.getName());
             } catch (Throwable e) {
                 getLogger().log(Level.SEVERE,"Error disabling module " + module.getName(), e);
             }
@@ -70,8 +61,18 @@ public class CrayonCore extends JavaPlugin implements CrayonAPI {
 
     @Override
     public void onLoad() {
+        config = ConfigUtil.getConfig("config", this);
+
+        if (!config.getFile().isFile()) {
+            getLogger().info("Config file not found. Creating new one...");
+            config.setDefault("prefix", "&8[&bCrayon&8]&r ");
+            config.setDefault("debugmode", false);
+            config.setDefault("modules.blacklist", new ArrayList<>());
+            config.save();
+        }
+
         getLogger().info("Loading CrayonCore...");
-        getLogger().info("Scanning for modules...");
+        if (isDebugMode()) getLogger().info("Scanning for modules...");
 
         String modulePackage = "net.crayonsmp";
 
@@ -88,7 +89,7 @@ public class CrayonCore extends JavaPlugin implements CrayonAPI {
 
         for (Class<? extends CrayonModule> moduleClass : moduleClasses) {
             String moduleClassName = moduleClass.getName();
-            getLogger().info("Attempting to load module class: " + moduleClassName);
+            if (isDebugMode()) getLogger().info("Attempting to load module class: " + moduleClassName);
             try {
                 if (isDebugMode()) getLogger().info("  Instantiating " + moduleClassName + "...");
                 CrayonModule module = moduleClass.getDeclaredConstructor().newInstance();

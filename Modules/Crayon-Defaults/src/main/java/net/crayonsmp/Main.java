@@ -29,7 +29,7 @@ public class Main implements CrayonModule {
     @Override
     public <API extends Plugin & CrayonAPI> void onEnable(API plugin) {
         registerCommand("modules",plugin).setExecutor(new ModulesCommand(plugin));
-        registerCommand("debugcrayon", plugin).setExecutor(new DebugCommand());
+        registerCommand("debugcrayon", plugin).setExecutor(new DebugCommand(plugin));
 
         plugin.getServer().getPluginManager().registerEvents(new DebugListener(), plugin);
     }
