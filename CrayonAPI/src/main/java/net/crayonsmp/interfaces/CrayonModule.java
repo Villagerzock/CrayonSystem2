@@ -21,6 +21,7 @@ import java.util.List;
 public interface CrayonModule {
     String getName();
     default String getAuthor(){return "";}
+    String getVersion();
     default void OnBlueMapEnabled(BlueMapAPI blueMapAPI){}
     default void onLoad(CrayonAPI api) {} // oder einfach kein Parameter
     <API extends Plugin & CrayonAPI> void onEnable(API plugin);

@@ -1,2 +1,4 @@
-net\crayonsmp\commands\ModulesCommand.class
-net\crayonsmp\Main.class
+net/crayonsmp/listeners/DebugListener.class
+net/crayonsmp/commands/ModulesCommand.class
+net/crayonsmp/commands/DebugCommand.class
+net/crayonsmp/Main.class
