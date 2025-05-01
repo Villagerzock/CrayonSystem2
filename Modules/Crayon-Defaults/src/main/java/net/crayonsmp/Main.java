@@ -1,5 +1,6 @@
 package net.crayonsmp;
 
+import com.ticxo.modelengine.api.ModelEngineAPI;
 import net.crayonsmp.commands.DebugCommand;
 import net.crayonsmp.commands.ModulesCommand;
 import net.crayonsmp.interfaces.CrayonModule;
@@ -8,18 +9,6 @@ import org.bukkit.plugin.Plugin;
 
 public class Main implements CrayonModule {
 
-    @Override
-    public String getName() {
-        return "Crayon-Defaults";
-    }
-
-    @Override
-    public String getVersion() { return "0.0.1"; }
-
-    @Override
-    public String getAuthor() {
-        return "Terrocraft, Villagerzock";
-    }
 
     @Override
     public void onLoad(CrayonAPI core) {
@@ -37,5 +26,18 @@ public class Main implements CrayonModule {
     @Override
     public void onDisable() {
         // Aufräumen
+    }
+
+    @Override
+    public String getName() {
+        return "Crayon-Defaults";
+    }
+
+    @Override
+    public String getVersion() { return "0.0.1"; }
+
+    @Override
+    public String getAuthor() {
+        return "Terrocraft, Villagerzock";
     }
 }
