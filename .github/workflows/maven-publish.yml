@@ -1,4 +1,4 @@
-# This workflow builds a Maven multi-module project and uploads all generated JAR files as artifacts.
+# This workflow builds a Maven multi-module project and uploads each generated JAR file as a separate artifact.
 # It can be triggered by a push to the main branch, the creation of a release, or an external repository_dispatch event.
 
 name: CrayonSystem
@@ -34,8 +34,21 @@ jobs:
       - name: Build with Maven
         run: mvn -B package --file pom.xml
 
-      - name: Upload all JARs
-        uses: actions/upload-artifact@v4
-        with:
-          name: all-jars
-          path: '**/target/*.jar'
+      - name: Find all JAR files
+        id: find_jars
+        run: |
+          echo "jar_files<<EOF" >> $GITHUB_OUTPUT
+          find . -type f -name "*.jar" -print >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Upload each JAR separately
+        run: |
+          echo "${{ steps.find_jars.outputs.jar_files }}" | while read jar; do
+            if [ -f "$jar" ]; then
+              artifact_name=$(basename "$jar")
+              echo "Uploading $jar as $artifact_name"
+              gh release upload "$GITHUB_REF_NAME" "$jar" --clobber
+            fi
+          done
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
