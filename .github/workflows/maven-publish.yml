@@ -1,37 +1,63 @@
-# This workflow will build a package using Maven and then publish it to GitHub packages when a release is created
-# For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path
-
-name: CrayonSystem
+name: Build and Create Latest Release Asset
 
 on:
   push:
     branches:
-      - main
-  release:
-    types: [created]
+      - main # Löst aus bei Push auf den main-Branch
+  workflow_dispatch: # Ermöglicht manuelles Auslösen über die Actions-UI
 
 jobs:
-  build:
-
+  build_and_release:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      packages: write
+      contents: write # Erforderlich, um Releases/Tags zu erstellen/aktualisieren
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 21
-      uses: actions/setup-java@v4
-      with:
-        java-version: '21'
-        distribution: 'temurin'
-        server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-        settings-path: ${{ github.workspace }} # location for the settings.xml file
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
 
-    - name: Publish to GitHub Packages Apache Maven
-      run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
+      # Schritt 1: Projekt bauen
+      - name: Build with Maven
+        # Dieses Kommando sollte die JAR im erwarteten Pfad erzeugen
+        # Stelle sicher, dass dein pom.xml die 'CrayonCore-1.0-Crayon-shaded.jar' erzeugt
+        run: mvn -B package --file pom.xml
+
+      # Schritt 2: Pfad zur spezifischen JAR-Datei identifizieren
+      - name: Identify Target JAR Path
+        id: jar_info
+        # Passe diesen Pfad an, falls die JAR woanders liegt oder anders heißt
+        # Annahme: Die JAR wird im CrayonCore-Modul gebaut
+        # WICHTIG: Der Dateiname muss EXAKT mit dem übereinstimmen, was Maven baut!
+        run: |
+          JAR_PATH="CrayonCore/target/CrayonCore-1.0-Crayon-shaded.jar"
+          if [ -f "$JAR_PATH" ]; then
+            echo "JAR_FILE=$(basename $JAR_PATH)" >> $GITHUB_OUTPUT
+            echo "JAR_FULL_PATH=$JAR_PATH" >> $GITHUB_OUTPUT
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "JAR gefunden: $JAR_PATH"
+          else
+            echo "::error::JAR-Datei nicht gefunden unter $JAR_PATH"
+            echo "exists=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      # Schritt 3: Release erstellen/aktualisieren und JAR hochladen
+      - name: Create/Update Latest Release and Upload Asset
+        if: steps.jar_info.outputs.exists == 'true'
+        uses: softprops/action-gh-release@v2 # Eine zuverlässige Action zum Erstellen von Releases
+        with:
+          tag_name: latest # Ein fester Tag-Name für den neuesten Build
+          name: "Latest Build" # Name der Release
+          body: "Automated build from commit ${{ github.sha }}. Contains the latest ${{ steps.jar_info.outputs.JAR_FILE }}." # Beschreibung
+          draft: false # Nicht als Entwurf markieren
+          prerelease: true # Als Vorabversion markieren (unterscheidet von manuellen Releases)
+          # Hier wird die spezifische JAR-Datei als Asset hochgeladen
+          files: ${{ steps.jar_info.outputs.JAR_FULL_PATH }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Nutzt das Standard-Token
