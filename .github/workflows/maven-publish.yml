@@ -34,21 +34,48 @@ jobs:
       - name: Build with Maven
         run: mvn -B package --file pom.xml
 
-      - name: Find all JAR files
-        id: find_jars
+      - name: Find and upload all JARs individually
         run: |
-          echo "jar_files<<EOF" >> $GITHUB_OUTPUT
-          find . -type f -name "*.jar" -print >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          find . -type f -name "*.jar" | while read jar; do
+            name=$(basename "$jar")
+            echo "Uploading $jar as artifact: $name"
+            gh_action_output_name="${name//[^a-zA-Z0-9_-]/_}" # Clean name
+            echo "::group::Upload $name"
+            gh_output_path=$(dirname "$jar")/$name
+            echo "Upload path: $gh_output_path"
+            gh_action_artifact_name="${name%.*}" # Without .jar
+            gh_action_artifact_name="${gh_action_artifact_name//[^a-zA-Z0-9_-]/_}"
+            tar -czf "${gh_action_artifact_name}.tar.gz" -C "$(dirname "$jar")" "$(basename "$jar")"
+            gh_action_artifact_path="${gh_action_artifact_name}.tar.gz"
+            echo "Final artifact: $gh_action_artifact_path"
+            gh_action_artifact_name="${gh_action_artifact_name}_artifact"
+            echo "::endgroup::"
 
-      - name: Upload each JAR separately
-        run: |
-          echo "${{ steps.find_jars.outputs.jar_files }}" | while read jar; do
-            if [ -f "$jar" ]; then
-              artifact_name=$(basename "$jar")
-              echo "Uploading $jar as $artifact_name"
-              gh release upload "$GITHUB_REF_NAME" "$jar" --clobber
-            fi
+            # Upload as individual artifact
+            gh_api_upload_cmd="actions/upload-artifact@v4"
+            echo "Uploading $gh_action_artifact_path as $gh_action_artifact_name"
+            echo "::group::GitHub Upload $gh_action_artifact_name"
+            echo "::endgroup::"
+            echo "::notice file=$jar::Uploading $jar as $gh_action_artifact_name"
+            mkdir -p "upload_temp"
+            cp "$jar" "upload_temp/$name"
+            gh_action_artifact_name="${gh_action_artifact_name//[^a-zA-Z0-9_-]/_}"
+            gh_action_artifact_name="${gh_action_artifact_name:-jar}"
+            echo "::notice ::Uploading: $gh_action_artifact_name"
+            echo "::group::Upload Artifact $gh_action_artifact_name"
+            gh_action_upload_cmd="gh_action_upload_$gh_action_artifact_name"
+            echo "::endgroup::"
+
+            # Upload using action
+            tarball="${name}.tar.gz"
+            echo "::notice ::Uploading $jar as $name"
+            tar -czf "$tarball" -C "$(dirname "$jar")" "$(basename "$jar")"
+            echo "::notice ::Uploading $tarball"
           done
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+
+      - name: Upload artifacts separately
+        uses: actions/upload-artifact@v4
+        with:
+          name: all-jars
+          path: '**/target/*.jar'
