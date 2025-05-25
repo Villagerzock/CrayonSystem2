@@ -5,6 +5,7 @@ import net.crayonsmp.managers.GoalManager;
 import net.crayonsmp.utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -33,14 +34,17 @@ public class GoalMenuListener implements Listener {
             if (goalInventory.selectetPlaceholder != null && goalInventory.selectetPrimaryMagic != null && goalInventory.selectetSecondaryMagic != null){
                 if (goalInventory.selectetPlaceholder.equals(GoalType.good)) {
                     GoalManager.addPlayerGoalData(p.getUniqueId().toString(), new PlayerGoal(goalInventory.getGoodPlaceholder().getGoal(), goalInventory.selectetPrimaryMagic, goalInventory.selectetSecondaryMagic));
+                    GoalMenu.goalInventories.remove(p);
                     p.sendMessage("Your goal has been set to " + goalInventory.getGoodPlaceholder().getGoal().getName());
                 }
                 else if (goalInventory.selectetPlaceholder.equals(GoalType.neutral)) {
                     GoalManager.addPlayerGoalData(p.getUniqueId().toString(), new PlayerGoal(goalInventory.getNeutralPlaceholder().getGoal(), goalInventory.selectetPrimaryMagic, goalInventory.selectetSecondaryMagic));
+                    GoalMenu.goalInventories.remove(p);
                     p.sendMessage("Your goal has been set to " + goalInventory.getGoodPlaceholder().getGoal().getName());
                 }
                 else if (goalInventory.selectetPlaceholder.equals(GoalType.bad)) {
                     GoalManager.addPlayerGoalData(p.getUniqueId().toString(), new PlayerGoal(goalInventory.getBadPlaceholder().getGoal(), goalInventory.selectetPrimaryMagic, goalInventory.selectetSecondaryMagic));
+                    GoalMenu.goalInventories.remove(p);
                     p.sendMessage("Your goal has been set to " + goalInventory.getGoodPlaceholder().getGoal().getName());
                 }
                 } else {
@@ -74,10 +78,11 @@ public class GoalMenuListener implements Listener {
                         Goalinv.setSelectetPlaceholder(GoalType.good);
                         GoalMenu.setDefaultModelData(inv); // Resets all to default (unselected)
                         // Highlight the specific "main" GoodGoal button at slot 0
-                        inv.setItem(0, new ItemBuilder().setMeterial(Material.IRON_NUGGET).setTitle("GoodGoal").setCustomModelData(2001).build());
+                        inv.setItem(0, new ItemBuilder().setMeterial(Material.IRON_NUGGET).sethidetooltip(true).setCustomModelData(2001).build());
                         Goalinv.setSelectetPrimaryMagic(null);
                         Goalinv.setSelectetSecondaryMagic(null);
                         GoalMenu.setSelectetGoal(Goalinv); // This will populate the main content
+                        p.playSound(p, Sound.UI_BUTTON_CLICK, 1, 1);
                         event.setCancelled(true);
                         return;
                     }
@@ -87,10 +92,11 @@ public class GoalMenuListener implements Listener {
                         Goalinv.setSelectetPlaceholder(GoalType.neutral);
                         GoalMenu.setDefaultModelData(inv); // Resets all to default
                         // Highlight the specific "main" NeutralGoal button at slot 3
-                        inv.setItem(3, new ItemBuilder().setMeterial(Material.IRON_NUGGET).setTitle("NeutralGoal").setCustomModelData(2001).build());
+                        inv.setItem(3, new ItemBuilder().setMeterial(Material.IRON_NUGGET).sethidetooltip(true).setCustomModelData(2002).build());
                         Goalinv.setSelectetPrimaryMagic(null);
                         Goalinv.setSelectetSecondaryMagic(null);
                         GoalMenu.setSelectetGoal(Goalinv);
+                        p.playSound(p, Sound.UI_BUTTON_CLICK, 1, 1);
                         event.setCancelled(true);
                         return;
                     }
@@ -99,52 +105,126 @@ public class GoalMenuListener implements Listener {
                     if (Goalinv.getSelectetPlaceholder() != GoalType.bad) {
                         Goalinv.setSelectetPlaceholder(GoalType.bad);
                         GoalMenu.setDefaultModelData(inv); // Resets all to default
-                        inv.setItem(6, new ItemBuilder().setMeterial(Material.IRON_NUGGET).setTitle("BadGoal").setCustomModelData(2001).build());
+                        inv.setItem(6, new ItemBuilder().setMeterial(Material.IRON_NUGGET).sethidetooltip(true).setCustomModelData(2003).build());
                         Goalinv.setSelectetPrimaryMagic(null);
                         Goalinv.setSelectetSecondaryMagic(null);
                         GoalMenu.setSelectetGoal(Goalinv);
+                        p.playSound(p, Sound.UI_BUTTON_CLICK, 1, 1);
                         event.setCancelled(true);
                         return;
                     }
                 }
                 else if (clickedSlot == 22) {
-                        Magic magic = Goalinv.getGoodPlaceholder().getMagicPrimeryList().get(0);
-                        GoalMenu.setSelectetGoal(Goalinv);
-                        inv.setItem(22, GoalMenu.generateMagicItems(magic, 2005));
+                    Magic magic = null;
+                        switch (Goalinv.selectetPlaceholder){
+                            case good:
+                                magic = Goalinv.getGoodPlaceholder().getMagicPrimeryList().get(0);
+                                GoalMenu.resetPrimeryMagics(Goalinv.getInv(), Goalinv.getGoodPlaceholder());
+                                break;
+                            case neutral:
+                                magic = Goalinv.getNeutralPlaceholder().getMagicPrimeryList().get(0);
+                                GoalMenu.resetPrimeryMagics(Goalinv.getInv(), Goalinv.getNeutralPlaceholder());
+                                break;
+                            case bad:
+                                magic = Goalinv.getBadPlaceholder().getMagicPrimeryList().get(0);
+                                GoalMenu.resetPrimeryMagics(Goalinv.getInv(), Goalinv.getBadPlaceholder());
+                                break;
+                        }
                         Goalinv.setSelectetPrimaryMagic(magic);
+                        inv.setItem(22, GoalMenu.generateMagicItems(magic, 2005));
                         event.setCancelled(true);
+                    p.playSound(p, Sound.UI_BUTTON_CLICK, 1, 1);
                         return;
                 }
                 else if (clickedSlot == 24) {
-                    Magic magic = Goalinv.getGoodPlaceholder().getMagicPrimeryList().get(1);
-                    GoalMenu.setSelectetGoal(Goalinv);
-                    inv.setItem(24, GoalMenu.generateMagicItems(magic, 2006));
+                    Magic magic = null;
+                    switch (Goalinv.selectetPlaceholder){
+                        case good:
+                            magic = Goalinv.getGoodPlaceholder().getMagicPrimeryList().get(1);
+                            GoalMenu.resetPrimeryMagics(Goalinv.getInv(), Goalinv.getGoodPlaceholder());
+                            break;
+                        case neutral:
+                            magic = Goalinv.getNeutralPlaceholder().getMagicPrimeryList().get(1);
+                            GoalMenu.resetPrimeryMagics(Goalinv.getInv(), Goalinv.getNeutralPlaceholder());
+                            break;
+                        case bad:
+                            magic = Goalinv.getBadPlaceholder().getMagicPrimeryList().get(1);
+                            GoalMenu.resetPrimeryMagics(Goalinv.getInv(), Goalinv.getBadPlaceholder());
+                            break;
+                    }
                     Goalinv.setSelectetPrimaryMagic(magic);
+                    Goalinv.setSelectetPrimaryMagic(magic);
+                    inv.setItem(24, GoalMenu.generateMagicItems(magic, 2006));
                     event.setCancelled(true);
+                    p.playSound(p, Sound.UI_BUTTON_CLICK, 1, 1);
                     return;
                 }
                 else if (clickedSlot == 26) {
-                    Magic magic = Goalinv.getGoodPlaceholder().getMagicPrimeryList().get(2);
-                    GoalMenu.setSelectetGoal(Goalinv);
-                    inv.setItem(26, GoalMenu.generateMagicItems(magic, 2007));
+                    Magic magic = null;
+                    switch (Goalinv.selectetPlaceholder){
+                        case good:
+                            magic = Goalinv.getGoodPlaceholder().getMagicPrimeryList().get(2);
+                            GoalMenu.resetPrimeryMagics(Goalinv.getInv(), Goalinv.getGoodPlaceholder());
+                            break;
+                        case neutral:
+                            magic = Goalinv.getNeutralPlaceholder().getMagicPrimeryList().get(2);
+                            GoalMenu.resetPrimeryMagics(Goalinv.getInv(), Goalinv.getNeutralPlaceholder());
+                            break;
+                        case bad:
+                            magic = Goalinv.getBadPlaceholder().getMagicPrimeryList().get(2);
+                            GoalMenu.resetPrimeryMagics(Goalinv.getInv(), Goalinv.getBadPlaceholder());
+                            break;
+                    }
                     Goalinv.setSelectetPrimaryMagic(magic);
+                    Goalinv.setSelectetPrimaryMagic(magic);
+                    inv.setItem(26, GoalMenu.generateMagicItems(magic, 2007));
                     event.setCancelled(true);
+                    p.playSound(p, Sound.UI_BUTTON_CLICK, 1, 1);
                     return;
                 }
                 else if (clickedSlot == 40) {
-                    Magic magic = Goalinv.getGoodPlaceholder().getMagicSecondaryList().get(0);
-                    GoalMenu.setSelectetGoal(Goalinv);
-                    inv.setItem(40, GoalMenu.generateMagicItems(magic, 2008));
+                    Magic magic = null;
+                    switch (Goalinv.selectetPlaceholder){
+                        case good:
+                            magic = Goalinv.getGoodPlaceholder().getMagicSecondaryList().get(0);
+                            GoalMenu.resetSecondaryMagics(Goalinv.getInv(), Goalinv.getGoodPlaceholder());
+                            break;
+                        case neutral:
+                            magic = Goalinv.getNeutralPlaceholder().getMagicSecondaryList().get(0);
+                            GoalMenu.resetSecondaryMagics(Goalinv.getInv(), Goalinv.getNeutralPlaceholder());
+                            break;
+                        case bad:
+                            magic = Goalinv.getBadPlaceholder().getMagicSecondaryList().get(0);
+                            GoalMenu.resetSecondaryMagics(Goalinv.getInv(), Goalinv.getBadPlaceholder());
+                            break;
+                    }
+                    Goalinv.setSelectetPrimaryMagic(magic);
                     Goalinv.setSelectetSecondaryMagic(magic);
+                    inv.setItem(40, GoalMenu.generateMagicItems(magic, 2008));
                     event.setCancelled(true);
+                    p.playSound(p, Sound.UI_BUTTON_CLICK, 1, 1);
                     return;
                 }
                 else if (clickedSlot == 42) {
-                    Magic magic = Goalinv.getGoodPlaceholder().getMagicSecondaryList().get(1);
-                    GoalMenu.setSelectetGoal(Goalinv);
-                    inv.setItem(42, GoalMenu.generateMagicItems(magic, 2009));
+                    Magic magic = null;
+                    switch (Goalinv.selectetPlaceholder){
+                        case good:
+                            magic = Goalinv.getGoodPlaceholder().getMagicSecondaryList().get(1);
+                            GoalMenu.resetSecondaryMagics(Goalinv.getInv(), Goalinv.getGoodPlaceholder());
+                            break;
+                        case neutral:
+                            magic = Goalinv.getNeutralPlaceholder().getMagicSecondaryList().get(1);
+                            GoalMenu.resetSecondaryMagics(Goalinv.getInv(), Goalinv.getNeutralPlaceholder());
+                            break;
+                        case bad:
+                            magic = Goalinv.getBadPlaceholder().getMagicSecondaryList().get(1);
+                            GoalMenu.resetSecondaryMagics(Goalinv.getInv(), Goalinv.getBadPlaceholder());
+                            break;
+                    }
                     Goalinv.setSelectetSecondaryMagic(magic);
+                    inv.setItem(42, GoalMenu.generateMagicItems(magic, 2009));
                     event.setCancelled(true);
+                    p.playSound(p, Sound.UI_BUTTON_CLICK, 1, 1);
                     return;
                 }
 

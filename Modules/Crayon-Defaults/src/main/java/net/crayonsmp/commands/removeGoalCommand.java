@@ -1,5 +1,6 @@
 package net.crayonsmp.commands;
 
+import net.crayonsmp.gui.GoalMenu;
 import net.crayonsmp.managers.GoalManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
@@ -20,6 +21,7 @@ public class removeGoalCommand implements CommandExecutor {
             if (taget != null) {
                 GoalManager.removePlayerGoalData(taget.getUniqueId().toString());
                 taget.sendMessage("Your goal has been removed.");
+                GoalMenu.openGoalMenu(taget);
                 sender.sendMessage("Removed goal for player " + taget.getName() + ".");
             } else {
                 sender.sendMessage("Player '" + args[0] + "' not found.");

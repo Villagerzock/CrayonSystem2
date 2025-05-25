@@ -94,6 +94,11 @@ public class ItemBuilder {
         return this;
     }
 
+    public ItemBuilder sethidetooltip(Boolean hide) {
+        itemMeta.setHideTooltip(hide);
+        return this;
+    }
+
     public ItemStack build() {
         item.setItemMeta(itemMeta);
         return item;
