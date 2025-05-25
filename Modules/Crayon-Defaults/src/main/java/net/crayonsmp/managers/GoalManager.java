@@ -203,6 +203,37 @@ public class GoalManager {
         PlayerGoalData.put(uuid, playerGoal); // Keep consistent for in-memory access
         Main.PlayerGoalData.set("playergoals." + uuid, playerGoal); // For persistent storage
         Main.PlayerGoalData.save();
+
+        Player p = Bukkit.getPlayer(UUID.fromString(uuid));
+
+        if(p != null) {
+            if (playerGoal.getMagicPrimery().getId().equals("FIRE"))
+                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "n give fire_scythe 1 " + p.getName());
+
+            if (playerGoal.getMagicPrimery().getId().equals("ICE"))
+                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "n give ice_katana 1 " + p.getName());
+
+            if (playerGoal.getMagicPrimery().getId().equals("LIGHT"))
+                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "n give light_greatsword 1 " + p.getName());
+
+            if (playerGoal.getMagicPrimery().getId().equals("DARKNESS"))
+                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "n give darkness_katana 1 " + p.getName());
+
+            if (playerGoal.getMagicPrimery().getId().equals("LAVA"))
+                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "n give magma_sledge 1 " + p.getName());
+
+            if (playerGoal.getMagicPrimery().getId().equals("EATH"))
+                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "n give earth_hammer 1 " + p.getName());
+
+            if (playerGoal.getMagicPrimery().getId().equals("LIGHTNING"))
+                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "n give mjolnir 1 " + p.getName());
+
+            if (playerGoal.getMagicPrimery().getId().equals("WATER"))
+                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "n give water_trident 1 " + p.getName());
+
+            if (playerGoal.getMagicPrimery().getId().equals("POISON"))
+                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "n give poisonous_dagger 1 " + p.getName());
+        }
     }
 //----------Placeholder Creation---------
 
@@ -214,6 +245,19 @@ public class GoalManager {
 
     public static boolean hasPlayerGoalData(Player p) {
         return PlayerGoalData.containsKey(p.getUniqueId().toString());
+    }
+
+    public static boolean hasPlayerMagicPrimeryType(Player player, String ID){
+        if(hasPlayerGoalData(player)){
+            return PlayerGoalData.get(player.getUniqueId().toString()).getMagicPrimery().getId().equals(ID);
+        }
+        return false;
+    }
+    public static boolean hasPlayerMagicSeconderyType(Player player, String ID){
+        if(hasPlayerGoalData(player)){
+            return PlayerGoalData.get(player.getUniqueId().toString()).getMagicSecondary().getId().equals(ID);
+        }
+        return false;
     }
 
     private static class MagicSelectionCandidate {
