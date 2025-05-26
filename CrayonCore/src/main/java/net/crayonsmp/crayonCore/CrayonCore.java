@@ -1,6 +1,5 @@
 package net.crayonsmp.crayonCore;
 
-import de.bluecolored.bluemap.api.BlueMapAPI;
 import net.crayonsmp.CrayonAPI;
 import net.crayonsmp.interfaces.CrayonModule;
 import net.crayonsmp.utils.config.ConfigUtil;
@@ -59,11 +58,6 @@ public class CrayonCore extends JavaPlugin implements CrayonAPI {
         loadedModules.clear();
         getLogger().info("Finished disabling modules.");
     }
-    private void onBlueMapApiLoaded(BlueMapAPI api){
-        for (CrayonModule module : loadedModules){
-            module.OnBlueMapEnabled(api);
-        }
-    }
     @Override
     public void onLoad() {
         config = ConfigUtil.getConfig("config", this);
@@ -118,7 +112,6 @@ public class CrayonCore extends JavaPlugin implements CrayonAPI {
                 getLogger().log(Level.SEVERE, "!!! CRITICAL FAILURE loading module: " + moduleClassName + " !!!", e);
             }
         }
-        BlueMapAPI.onEnable(this::onBlueMapApiLoaded);
         getLogger().info("Finished module loading sequence. Total modules loaded: " + loadedModules.size());
     }
 
