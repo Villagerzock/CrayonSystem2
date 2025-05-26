@@ -1,7 +1,6 @@
 package net.crayonsmp.interfaces;
 
 
-import de.bluecolored.bluemap.api.BlueMapAPI;
 import dev.turingcomplete.textcaseconverter.StandardTextCases;
 import dev.turingcomplete.textcaseconverter.StandardWordsSplitters;
 import net.crayonsmp.CrayonAPI;
@@ -19,7 +18,6 @@ public interface CrayonModule {
     String getName();
     default String getAuthor(){return "";}
     String getVersion();
-    default void OnBlueMapEnabled(BlueMapAPI blueMapAPI){}
     default void onLoad(CrayonAPI api) {} // oder einfach kein Parameter
     <API extends Plugin & CrayonAPI> void onEnable(API plugin);
     default void onDisable() {}
