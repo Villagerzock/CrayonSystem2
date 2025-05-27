@@ -4,6 +4,8 @@ import net.crayonsmp.Main;
 import net.crayonsmp.utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -233,6 +235,8 @@ public class GoalManager {
 
             if (playerGoal.getMagicPrimery().getId().equals("POISON"))
                 Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "n give poisonous_dagger 1 " + p.getName());
+
+            ApplySeconderyEffects(p);
         }
     }
 //----------Placeholder Creation---------
@@ -267,6 +271,47 @@ public class GoalManager {
         MagicSelectionCandidate(final String id, final int probability) {
             this.id = id;
             this.probability = probability;
+        }
+    }
+
+
+
+    public static void ApplySeconderyEffects(Player player){
+        if(hasPlayerGoalData(player)){
+            if (hasPlayerMagicSeconderyType(player, "WATER")){
+                PotionEffect effect1 = new PotionEffect(
+                        PotionEffectType.WATER_BREATHING,
+                        Integer.MAX_VALUE,
+                        1,
+                        false,
+                        false,
+                        false
+                );
+                PotionEffect effect2 = new PotionEffect(
+                        PotionEffectType.DOLPHINS_GRACE,
+                        Integer.MAX_VALUE,
+                        2,
+                        false,
+                        false,
+                        false
+                );
+                player.addPotionEffect(effect1);
+                player.addPotionEffect(effect2);
+            }
+            if (hasPlayerMagicSeconderyType(player, "EATH")){
+                PotionEffect effect = new PotionEffect(
+                        PotionEffectType.RESISTANCE,
+                        Integer.MAX_VALUE,
+                        4,
+                        false,
+                        false,
+                        false
+                );
+                player.addPotionEffect(effect);
+            }
+            if (hasPlayerMagicSeconderyType(player, "LIGHTNING")){
+                player.setWalkSpeed(0.3F);
+            }
         }
     }
 }

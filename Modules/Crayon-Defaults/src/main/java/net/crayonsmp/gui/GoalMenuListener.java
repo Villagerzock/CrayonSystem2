@@ -13,6 +13,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 
 import java.util.Objects;
 
@@ -84,7 +85,6 @@ public class GoalMenuListener implements Listener {
                         GoalMenu.setSelectetGoal(Goalinv); // This will populate the main content
                         p.playSound(p, Sound.UI_BUTTON_CLICK, 1, 1);
                         event.setCancelled(true);
-                        return;
                     }
                 }
                 else if (clickedSlot >= 3 && clickedSlot <= 5) {
@@ -98,7 +98,6 @@ public class GoalMenuListener implements Listener {
                         GoalMenu.setSelectetGoal(Goalinv);
                         p.playSound(p, Sound.UI_BUTTON_CLICK, 1, 1);
                         event.setCancelled(true);
-                        return;
                     }
                 }
                 else if (clickedSlot >= 6 && clickedSlot <= 8) {
@@ -111,7 +110,6 @@ public class GoalMenuListener implements Listener {
                         GoalMenu.setSelectetGoal(Goalinv);
                         p.playSound(p, Sound.UI_BUTTON_CLICK, 1, 1);
                         event.setCancelled(true);
-                        return;
                     }
                 }
                 else if (clickedSlot == 22) {
@@ -134,7 +132,6 @@ public class GoalMenuListener implements Listener {
                         inv.setItem(22, GoalMenu.generateMagicItems(magic, 2005));
                         event.setCancelled(true);
                     p.playSound(p, Sound.UI_BUTTON_CLICK, 1, 1);
-                        return;
                 }
                 else if (clickedSlot == 24) {
                     Magic magic = null;
@@ -153,11 +150,9 @@ public class GoalMenuListener implements Listener {
                             break;
                     }
                     Goalinv.setSelectetPrimaryMagic(magic);
-                    Goalinv.setSelectetPrimaryMagic(magic);
                     inv.setItem(24, GoalMenu.generateMagicItems(magic, 2006));
                     event.setCancelled(true);
                     p.playSound(p, Sound.UI_BUTTON_CLICK, 1, 1);
-                    return;
                 }
                 else if (clickedSlot == 26) {
                     Magic magic = null;
@@ -176,11 +171,9 @@ public class GoalMenuListener implements Listener {
                             break;
                     }
                     Goalinv.setSelectetPrimaryMagic(magic);
-                    Goalinv.setSelectetPrimaryMagic(magic);
                     inv.setItem(26, GoalMenu.generateMagicItems(magic, 2007));
                     event.setCancelled(true);
                     p.playSound(p, Sound.UI_BUTTON_CLICK, 1, 1);
-                    return;
                 }
                 else if (clickedSlot == 40) {
                     Magic magic = null;
@@ -198,12 +191,10 @@ public class GoalMenuListener implements Listener {
                             GoalMenu.resetSecondaryMagics(Goalinv.getInv(), Goalinv.getBadPlaceholder());
                             break;
                     }
-                    Goalinv.setSelectetPrimaryMagic(magic);
                     Goalinv.setSelectetSecondaryMagic(magic);
                     inv.setItem(40, GoalMenu.generateMagicItems(magic, 2008));
                     event.setCancelled(true);
                     p.playSound(p, Sound.UI_BUTTON_CLICK, 1, 1);
-                    return;
                 }
                 else if (clickedSlot == 42) {
                     Magic magic = null;
@@ -225,12 +216,24 @@ public class GoalMenuListener implements Listener {
                     inv.setItem(42, GoalMenu.generateMagicItems(magic, 2009));
                     event.setCancelled(true);
                     p.playSound(p, Sound.UI_BUTTON_CLICK, 1, 1);
-                    return;
+                }
+
+                InventoryView openView = p.getOpenInventory();
+                if (Goalinv.selectetPlaceholder != null && Goalinv.selectetPrimaryMagic != null && Goalinv.selectetSecondaryMagic != null) {
+
+                    openView.setTitle("<shift:-37><glyph:menu_goals_esc>");
+                    p.updateInventory();
+                } else {
+                    openView.setTitle("<shift:-37><glyph:menu_goals>");
+                    p.updateInventory();
                 }
 
                 event.setCancelled(true);
                 return;
             }
+
         }
+
+
     }
 }
