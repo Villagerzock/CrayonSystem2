@@ -3,6 +3,8 @@ package net.crayonsmp.managers;
 import net.crayonsmp.Main;
 import net.crayonsmp.utils.*;
 import org.bukkit.Bukkit;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -276,42 +278,84 @@ public class GoalManager {
 
 
 
-    public static void ApplySeconderyEffects(Player player){
-        if(hasPlayerGoalData(player)){
-            if (hasPlayerMagicSeconderyType(player, "WATER")){
-                PotionEffect effect1 = new PotionEffect(
-                        PotionEffectType.WATER_BREATHING,
-                        Integer.MAX_VALUE,
-                        1,
-                        false,
-                        false,
-                        false
-                );
-                PotionEffect effect2 = new PotionEffect(
-                        PotionEffectType.DOLPHINS_GRACE,
-                        Integer.MAX_VALUE,
-                        2,
-                        false,
-                        false,
-                        false
-                );
-                player.addPotionEffect(effect1);
-                player.addPotionEffect(effect2);
-            }
-            if (hasPlayerMagicSeconderyType(player, "EATH")){
-                PotionEffect effect = new PotionEffect(
-                        PotionEffectType.RESISTANCE,
-                        Integer.MAX_VALUE,
-                        4,
-                        false,
-                        false,
-                        false
-                );
-                player.addPotionEffect(effect);
-            }
-            if (hasPlayerMagicSeconderyType(player, "LIGHTNING")){
-                player.setWalkSpeed(0.3F);
-            }
+    private static final Map<UUID, Map<String, UUID>> activeAttributeModifiers = new HashMap<>();
+
+    public static void ApplySeconderyEffects(Player player) {
+        if (!hasPlayerGoalData(player)) {
+            removeAllSecondaryEffects(player);
+            return;
+        }
+
+        UUID playerUUID = player.getUniqueId();
+        activeAttributeModifiers.putIfAbsent(playerUUID, new HashMap<>());
+
+        if (hasPlayerMagicSeconderyType(player, "WATER")) {
+            // For water breathing, you'll need to handle it with an event listener as there's no direct attribute.
+            // This example focuses purely on attributes. You would implement custom logic for water breathing
+            // (e.g., cancelling drowning damage, refilling air) in a separate method or event handler.
+            // For the "Dolphin's Grace" aspect (movement speed), an attribute can be used.
+            applyAttribute(player, "WATER_MOVEMENT", Attribute.WATER_MOVEMENT_EFFICIENCY, 0.3, AttributeModifier.Operation.ADD_NUMBER);
+        } else {
+            removeAttribute(player, "WATER_MOVEMENT", Attribute.WATER_MOVEMENT_EFFICIENCY);
+        }
+
+        if (hasPlayerMagicSeconderyType(player, "EARTH")) {
+            applyAttribute(player, "EARTH_RESISTANCE_ARMOR", Attribute.ARMOR_TOUGHNESS, 20.0, AttributeModifier.Operation.ADD_NUMBER);
+        } else {
+            removeAttribute(player, "EARTH_RESISTANCE_ARMOR", Attribute.ARMOR_TOUGHNESS);
+        }
+
+        if (hasPlayerMagicSeconderyType(player, "LIGHTNING")) {
+            applyAttribute(player, "LIGHTNING_SPEED", Attribute.MOVEMENT_SPEED, 0.05, AttributeModifier.Operation.ADD_NUMBER);
+        } else {
+            removeAttribute(player, "LIGHTNING_SPEED", Attribute.MOVEMENT_SPEED);
+        }
+    }
+
+    public static void applyAttribute(Player player, String modifierIdentifier, Attribute attribute, double amount, AttributeModifier.Operation operation) {
+        UUID playerUUID = player.getUniqueId();
+        Map<String, UUID> playerModifiers = activeAttributeModifiers.get(playerUUID);
+
+        removeAttribute(player, modifierIdentifier, attribute);
+
+        UUID modifierUUID = UUID.randomUUID();
+        AttributeModifier modifier = new AttributeModifier(modifierUUID, modifierIdentifier, amount, operation);
+
+        player.getAttribute(attribute).addModifier(modifier);
+        playerModifiers.put(modifierIdentifier, modifierUUID);
+    }
+
+    public static void removeAttribute(Player player, String modifierIdentifier, Attribute attribute) {
+        UUID playerUUID = player.getUniqueId();
+        Map<String, UUID> playerModifiers = activeAttributeModifiers.get(playerUUID);
+
+        if (playerModifiers != null && playerModifiers.containsKey(modifierIdentifier)) {
+            UUID modifierUUID = playerModifiers.get(modifierIdentifier);
+            AttributeModifier modifierToRemove = new AttributeModifier(modifierUUID, modifierIdentifier, 0, AttributeModifier.Operation.ADD_NUMBER);
+            player.getAttribute(attribute).removeModifier(modifierToRemove);
+            playerModifiers.remove(modifierIdentifier);
+        }
+    }
+
+    public static void removeAllSecondaryEffects(Player player) {
+        UUID playerUUID = player.getUniqueId();
+        Map<String, UUID> playerModifiers = activeAttributeModifiers.get(playerUUID);
+
+        if (playerModifiers != null) {
+            new HashMap<>(playerModifiers).forEach((key, uuid) -> {
+                switch (key) {
+                    case "WATER_MOVEMENT":
+                        removeAttribute(player, key, Attribute.MOVEMENT_SPEED);
+                        break;
+                    case "EARTH_RESISTANCE_ARMOR":
+                        removeAttribute(player, key, Attribute.ARMOR_TOUGHNESS);
+                        break;
+                    case "LIGHTNING_SPEED":
+                        removeAttribute(player, key, Attribute.MOVEMENT_SPEED);
+                        break;
+                }
+            });
+            activeAttributeModifiers.remove(playerUUID);
         }
     }
 }

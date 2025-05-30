@@ -2,6 +2,7 @@ package net.crayonsmp.crayonCore;
 
 import net.crayonsmp.CrayonAPI;
 import net.crayonsmp.interfaces.CrayonModule;
+import net.crayonsmp.managers.ChatManager;
 import net.crayonsmp.utils.config.ConfigUtil;
 import net.crayonsmp.utils.config.SConfig;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -127,6 +128,6 @@ public class CrayonCore extends JavaPlugin implements CrayonAPI {
 
     @Override
     public String getPrefix() {
-        return config.getString("prefix") != null ? config.getString("prefix") : "&8[&bCrayon&8]&r ";
+        return ChatManager.format(config.getString("prefix") != null ? config.getString("prefix") : "&8[&bCrayon&8]&r ");
     }
 }

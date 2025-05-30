@@ -4,6 +4,7 @@ import net.crayonsmp.commands.*;
 import net.crayonsmp.gui.GoalMenuListener;
 import net.crayonsmp.interfaces.CrayonModule;
 import net.crayonsmp.listeners.DebugListener;
+import net.crayonsmp.listeners.PlayerListener;
 import net.crayonsmp.managers.ConfigManager;
 import net.crayonsmp.managers.DatapackManager;
 import net.crayonsmp.utils.Goal;
@@ -47,6 +48,7 @@ public class Main implements CrayonModule {
 
         plugin.getServer().getPluginManager().registerEvents(new DebugListener(), plugin);
         plugin.getServer().getPluginManager().registerEvents(new GoalMenuListener(), plugin);
+        plugin.getServer().getPluginManager().registerEvents(new PlayerListener(), plugin);
 
         datapackManager = new DatapackManager((JavaPlugin) plugin);
         datapackManager.setup();

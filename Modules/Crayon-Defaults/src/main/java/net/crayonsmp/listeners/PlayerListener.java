@@ -23,9 +23,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event){
         Player p = event.getPlayer();
-        p.removePotionEffect(PotionEffectType.WATER_BREATHING);
-        p.removePotionEffect(PotionEffectType.DOLPHINS_GRACE);
-        p.removePotionEffect(PotionEffectType.REGENERATION);
+        GoalManager.removeAllSecondaryEffects(p);
     }
 
     @EventHandler

@@ -12,7 +12,7 @@ public class removeGoalCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
 
         Player taget = Bukkit.getPlayer(args[0]);
-        if (!sender.hasPermission("crayon.goalset")) {
+        if (!sender.hasPermission("crayon.goalremove")) {
             sender.sendMessage("You do not have permission to use this command!");
             return true;
         }

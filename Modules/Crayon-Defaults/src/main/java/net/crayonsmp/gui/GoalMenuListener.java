@@ -36,17 +36,17 @@ public class GoalMenuListener implements Listener {
                 if (goalInventory.selectetPlaceholder.equals(GoalType.good)) {
                     GoalManager.addPlayerGoalData(p.getUniqueId().toString(), new PlayerGoal(goalInventory.getGoodPlaceholder().getGoal(), goalInventory.selectetPrimaryMagic, goalInventory.selectetSecondaryMagic));
                     GoalMenu.goalInventories.remove(p);
-                    p.sendMessage("Your goal has been set to " + goalInventory.getGoodPlaceholder().getGoal().getName());
+                    p.sendMessage("You can always look at your goal with /goal");
                 }
                 else if (goalInventory.selectetPlaceholder.equals(GoalType.neutral)) {
                     GoalManager.addPlayerGoalData(p.getUniqueId().toString(), new PlayerGoal(goalInventory.getNeutralPlaceholder().getGoal(), goalInventory.selectetPrimaryMagic, goalInventory.selectetSecondaryMagic));
                     GoalMenu.goalInventories.remove(p);
-                    p.sendMessage("Your goal has been set to " + goalInventory.getGoodPlaceholder().getGoal().getName());
+                    p.sendMessage("You can always look at your goal with /goal");
                 }
                 else if (goalInventory.selectetPlaceholder.equals(GoalType.bad)) {
                     GoalManager.addPlayerGoalData(p.getUniqueId().toString(), new PlayerGoal(goalInventory.getBadPlaceholder().getGoal(), goalInventory.selectetPrimaryMagic, goalInventory.selectetSecondaryMagic));
                     GoalMenu.goalInventories.remove(p);
-                    p.sendMessage("Your goal has been set to " + goalInventory.getGoodPlaceholder().getGoal().getName());
+                    p.sendMessage("You can always look at your goal with /goal");
                 }
                 } else {
                 Bukkit.getScheduler().runTaskLater(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("CrayonCore")), () -> {
