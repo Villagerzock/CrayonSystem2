@@ -77,7 +77,7 @@ public class GoalMenuListener implements Listener {
                 if (clickedSlot >= 0 && clickedSlot <= 2) {
                     if (Goalinv.getSelectetPlaceholder() != GoalType.good) {
                         Goalinv.setSelectetPlaceholder(GoalType.good);
-                        GoalMenu.setDefaultModelData(inv); // Resets all to default (unselected)
+                        GoalMenu.setDefaultModelData(Goalinv); // Resets all to default (unselected)
                         // Highlight the specific "main" GoodGoal button at slot 0
                         inv.setItem(0, new ItemBuilder().setMeterial(Material.IRON_NUGGET).sethidetooltip(true).setCustomModelData(2001).build());
                         Goalinv.setSelectetPrimaryMagic(null);
@@ -90,7 +90,7 @@ public class GoalMenuListener implements Listener {
                 else if (clickedSlot >= 3 && clickedSlot <= 5) {
                     if (Goalinv.getSelectetPlaceholder() != GoalType.neutral) {
                         Goalinv.setSelectetPlaceholder(GoalType.neutral);
-                        GoalMenu.setDefaultModelData(inv); // Resets all to default
+                        GoalMenu.setDefaultModelData(Goalinv); // Resets all to default
                         // Highlight the specific "main" NeutralGoal button at slot 3
                         inv.setItem(3, new ItemBuilder().setMeterial(Material.IRON_NUGGET).sethidetooltip(true).setCustomModelData(2002).build());
                         Goalinv.setSelectetPrimaryMagic(null);
@@ -103,7 +103,7 @@ public class GoalMenuListener implements Listener {
                 else if (clickedSlot >= 6 && clickedSlot <= 8) {
                     if (Goalinv.getSelectetPlaceholder() != GoalType.bad) {
                         Goalinv.setSelectetPlaceholder(GoalType.bad);
-                        GoalMenu.setDefaultModelData(inv); // Resets all to default
+                        GoalMenu.setDefaultModelData(Goalinv); // Resets all to default
                         inv.setItem(6, new ItemBuilder().setMeterial(Material.IRON_NUGGET).sethidetooltip(true).setCustomModelData(2003).build());
                         Goalinv.setSelectetPrimaryMagic(null);
                         Goalinv.setSelectetSecondaryMagic(null);

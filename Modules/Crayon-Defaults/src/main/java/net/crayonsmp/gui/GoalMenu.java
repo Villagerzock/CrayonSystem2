@@ -35,10 +35,10 @@ public class GoalMenu {
         goalInventories.put(player, goalinv); // Hinzugefügt: Spieler und GoalInventory in die Map
 
         goalinv.setSelectetPlaceholder(GoalType.good);
-        setDefaultModelData(inv); // Resets all to default (unselected)
+        setDefaultModelData(goalinv); // Resets all to default (unselected)
         // Das Item an Slot 0 wird hier gesetzt, um den "GoodGoal" als aktiv zu markieren.
         // Die CustomModelData 2001 sollte anzeigen, dass dieser Typ ausgewählt ist.
-        inv.setItem(0, new ItemBuilder().setMeterial(Material.IRON_NUGGET).setTitle("§rGoodGoal").setCustomModelData(2001).build());
+        inv.setItem(0, new ItemBuilder().setMeterial(Material.IRON_NUGGET).setTitle(goalinv.getGoodPlaceholder().getGoal().getName()).setCustomModelData(2001).build());
         setSelectetGoal(goalinv); // This will populate the main content based on the selected goal type
 
         player.openInventory(inv); // Inventar jetzt öffnen
@@ -154,25 +154,26 @@ public class GoalMenu {
         }
     }
 
-    public static void setDefaultModelData(Inventory inv){
+    public static void setDefaultModelData(GoalInventory ginv){
         // Setzt die Standard-CustomModelData für alle Goal-Typ-Buttons
         // (Slots 0-8 sind die Typ-Buttons)
+        Inventory inv = ginv.getInv();
         for (int i = 0; i < 3; i++) {
-            inv.setItem(i, new ItemBuilder().setMeterial(Material.IRON_NUGGET).sethidetooltip(true).setCustomModelData(1000).build());
+            inv.setItem(i, new ItemBuilder().setMeterial(Material.IRON_NUGGET).setTitle(ginv.getGoodPlaceholder().getGoal().getName()).setCustomModelData(1000).build());
         }
 
         for (int i = 3; i < 6; i++) {
-            inv.setItem(i, new ItemBuilder().setMeterial(Material.IRON_NUGGET).sethidetooltip(true).setCustomModelData(1000).build());
+            inv.setItem(i, new ItemBuilder().setMeterial(Material.IRON_NUGGET).setTitle(ginv.getNeutralPlaceholder().getGoal().getName()).setCustomModelData(1000).build());
         }
 
         for (int i = 6; i < 9; i++) {
-            inv.setItem(i, new ItemBuilder().setMeterial(Material.IRON_NUGGET).sethidetooltip(true).setCustomModelData(1000).build());
+            inv.setItem(i, new ItemBuilder().setMeterial(Material.IRON_NUGGET).setTitle(ginv.getBadPlaceholder().getGoal().getName()).setCustomModelData(1000).build());
         }
 
         // Setzt die spezifischen CustomModelData für die "ausgewählten" Buttons
         // (Diese werden dann später durch setSelectetGoal überschrieben, wenn ein Typ aktiv ausgewählt wird)
-        inv.setItem(0, new ItemBuilder().setMeterial(Material.IRON_NUGGET).sethidetooltip(true).setCustomModelData(1001).build());
-        inv.setItem(3, new ItemBuilder().setMeterial(Material.IRON_NUGGET).sethidetooltip(true).setCustomModelData(1002).build());
-        inv.setItem(6, new ItemBuilder().setMeterial(Material.IRON_NUGGET).sethidetooltip(true).setCustomModelData(1003).build());
+        inv.setItem(0, new ItemBuilder().setMeterial(Material.IRON_NUGGET).setTitle(ginv.getGoodPlaceholder().getGoal().getName()).setCustomModelData(1001).build());
+        inv.setItem(3, new ItemBuilder().setMeterial(Material.IRON_NUGGET).setTitle(ginv.getNeutralPlaceholder().getGoal().getName()).setCustomModelData(1002).build());
+        inv.setItem(6, new ItemBuilder().setMeterial(Material.IRON_NUGGET).setTitle(ginv.getBadPlaceholder().getGoal().getName()).setCustomModelData(1003).build());
     }
 }
