@@ -1,8 +1,10 @@
 package net.crayonsmp.listeners;
 
+import net.crayonsmp.Main;
 import net.crayonsmp.managers.GoalManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,13 +12,21 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffectType;
+
+import java.util.Map;
 
 public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
         Player p = event.getPlayer();
-
+        if (p.getPersistentDataContainer().has(NamespacedKey.fromString("mana", Main.getPlugin()))){
+            p.getPersistentDataContainer().set(NamespacedKey.fromString("mana", Main.getPlugin()), PersistentDataType.INTEGER,0);
+        }
+        if (p.getPersistentDataContainer().has(NamespacedKey.fromString("max_mana", Main.getPlugin()))){
+            p.getPersistentDataContainer().set(NamespacedKey.fromString("max_mana", Main.getPlugin()), PersistentDataType.INTEGER,1000);
+        }
         GoalManager.ApplySeconderyEffects(p);
     }
 
