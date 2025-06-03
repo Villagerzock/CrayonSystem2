@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="crayon-defaults" />
         <module name="CrayonAPI" />
+        <module name="Villagerzock" />
         <module name="CrayonCore" />
       </profile>
     </annotationProcessing>
