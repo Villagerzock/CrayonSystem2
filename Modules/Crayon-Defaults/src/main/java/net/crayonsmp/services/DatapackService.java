@@ -1,14 +1,12 @@
-package net.crayonsmp.managers;
+package net.crayonsmp.services;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,40 +14,37 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-public class DatapackManager {
+public class DatapackService {
 
-    private final JavaPlugin plugin;
     private final Logger logger;
-    private final File sourceDatapacksFolder;
+    private final File SourceDatapacksFolder;
 
     private final Map<World, List<File>> copiedDatapacks = new HashMap<>();
 
-    public DatapackManager(JavaPlugin plugin) {
-        this.plugin = plugin;
+    public DatapackService(JavaPlugin plugin) {
         this.logger = plugin.getLogger();
-        // Den Pfad zum Quellordner festlegen
-        this.sourceDatapacksFolder = new File(plugin.getDataFolder(), "/datapacks");
+        this.SourceDatapacksFolder = new File(plugin.getDataFolder(), "/datapacks");
     }
 
     public void setup() {
         logger.info("Initializing DatapackManager...");
 
-        if (!sourceDatapacksFolder.exists()) {
-            sourceDatapacksFolder.mkdirs();
-            logger.info("Plugin datapack source folder created: " + sourceDatapacksFolder.getAbsolutePath());
+        if (!SourceDatapacksFolder.exists()) {
+            SourceDatapacksFolder.mkdirs();
+            logger.info("Plugin datapack source folder created: " + SourceDatapacksFolder.getAbsolutePath());
             logger.info("Place your .zip datapacks inside this folder.");
             return;
         }
 
-        if (!sourceDatapacksFolder.isDirectory()) {
-            logger.severe("Plugin datapack source path is not a directory: " + sourceDatapacksFolder.getAbsolutePath());
+        if (!SourceDatapacksFolder.isDirectory()) {
+            logger.severe("Plugin datapack source path is not a directory: " + SourceDatapacksFolder.getAbsolutePath());
             return;
         }
 
-        File[] datapackFiles = sourceDatapacksFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".zip"));
+        File[] datapackFiles = SourceDatapacksFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".zip"));
 
         if (datapackFiles == null || datapackFiles.length == 0) {
-            logger.info("No .zip datapacks found in plugin source folder: " + sourceDatapacksFolder.getAbsolutePath());
+            logger.info("No .zip datapacks found in plugin source folder: " + SourceDatapacksFolder.getAbsolutePath());
             return;
         }
 
@@ -65,7 +60,7 @@ public class DatapackManager {
 
             if (!worldDatapacksFolder.isDirectory()) {
                 logger.severe("World datapacks path is not a directory for world '" + world.getName() + "': " + worldDatapacksFolder.getAbsolutePath());
-                continue; // Diese Welt überspringen
+                continue;
             }
 
 
@@ -90,19 +85,11 @@ public class DatapackManager {
 
         if (copiedCount > 0) {
             logger.info("Finished copying " + copiedCount + " datapack file(s). Triggering server reload...");
-//            Bukkit.getScheduler().runTaskLater(plugin, () -> {
-//                ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-//                Bukkit.dispatchCommand(console, "minecraft:reload");
-//                logger.info("Server reload command executed.");
-//            }, 40L); // Etwas längere Verzögerung zur Sicherheit
         } else {
             logger.info("No datapacks were copied to any world.");
         }
     }
 
-    /**
-     * Bereinigt die kopierten Datapacks beim Herunterfahren/Deaktivieren.
-     */
     public void cleanup() {
         logger.info("Cleaning up copied datapacks...");
 
@@ -115,7 +102,7 @@ public class DatapackManager {
 
             if (Bukkit.getWorld(world.getUID()) == null) {
                 logger.warning("World '" + world.getName() + "' is no longer loaded, cannot clean up datapacks in its folder.");
-                continue; // Überspringe diese Welt
+                continue;
             }
 
 
@@ -133,7 +120,7 @@ public class DatapackManager {
             }
         }
 
-        copiedDatapacks.clear(); // Referenzen löschen
+        copiedDatapacks.clear();
         logger.info("Cleanup finished. " + deletedCount + " datapack file(s) attempted to delete.");
 
     }

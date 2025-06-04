@@ -1,6 +1,6 @@
 package net.crayonsmp.listeners;
 
-import net.crayonsmp.managers.GoalManager;
+import net.crayonsmp.services.GoalService;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -10,29 +10,28 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.potion.PotionEffectType;
 
 public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
         Player p = event.getPlayer();
 
-        GoalManager.ApplySeconderyEffects(p);
+        GoalService.ApplySeconderyEffects(p);
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event){
         Player p = event.getPlayer();
-        GoalManager.removeAllSecondaryEffects(p);
+        GoalService.removeAllSecondaryEffects(p);
     }
 
     @EventHandler
     public static void DamageEvent(EntityDamageEvent e){
         if(e.getEntity() instanceof Player){
             Player p = (Player) e.getEntity();
-            if(GoalManager.hasPlayerGoalData(p)) {
+            if(GoalService.hasPlayerGoalData(p)) {
                 // Wind
-                if (GoalManager.hasPlayerMagicSeconderyType(p, "WIND")) {
+                if (GoalService.hasPlayerMagicSeconderyType(p, "WIND")) {
                     if (e.getCause() == EntityDamageEvent.DamageCause.FALL) {
                         double originalDamage = e.getDamage();
 
@@ -42,7 +41,7 @@ public class PlayerListener implements Listener {
                         }
                     }
                 }
-                if (GoalManager.hasPlayerMagicSeconderyType(p, "FIRE")) {
+                if (GoalService.hasPlayerMagicSeconderyType(p, "FIRE")) {
                     if (e.getCause() == EntityDamageEvent.DamageCause.FIRE || e.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK) {
                         double originalDamage = e.getDamage();
 
@@ -52,7 +51,7 @@ public class PlayerListener implements Listener {
                         }
                     }
                 }
-                if (GoalManager.hasPlayerMagicSeconderyType(p, "LAVA")) {
+                if (GoalService.hasPlayerMagicSeconderyType(p, "LAVA")) {
                     if (e.getCause() == EntityDamageEvent.DamageCause.LAVA) {
                         double originalDamage = e.getDamage();
 
@@ -62,7 +61,7 @@ public class PlayerListener implements Listener {
                         }
                     }
                 }
-                if (GoalManager.hasPlayerMagicSeconderyType(p, "ICE")) {
+                if (GoalService.hasPlayerMagicSeconderyType(p, "ICE")) {
                     if (e.getCause() == EntityDamageEvent.DamageCause.FREEZE) {
                         double originalDamage = e.getDamage();
 
@@ -72,13 +71,12 @@ public class PlayerListener implements Listener {
                         }
                     }
                 }
-                if (GoalManager.hasPlayerMagicSeconderyType(p, "POISON")) {
+                if (GoalService.hasPlayerMagicSeconderyType(p, "POISON")) {
                     if (e.getCause() == EntityDamageEvent.DamageCause.POISON) {
                         e.setDamage(0);
                     }
                 }
 
-                //---
             }
         }
     }
@@ -93,8 +91,8 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        if(GoalManager.hasPlayerGoalData(p)) {
-            if (GoalManager.hasPlayerMagicSeconderyType(p, "ICE")) {
+        if(GoalService.hasPlayerGoalData(p)) {
+            if (GoalService.hasPlayerMagicSeconderyType(p, "ICE")) {
                 Location blockUnderTo = new Location(to.getWorld(), to.getX(), to.getY() - 1, to.getZ());
                 Material typeUnderTo = blockUnderTo.getBlock().getType();
 

@@ -1,5 +1,6 @@
-package net.crayonsmp.utils;
+package net.crayonsmp.utils.goal;
 
+import net.crayonsmp.enums.GoalType;
 import org.bukkit.inventory.Inventory;
 
 public class GoalInventory {

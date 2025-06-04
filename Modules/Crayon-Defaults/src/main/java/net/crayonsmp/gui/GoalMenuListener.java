@@ -1,8 +1,11 @@
 package net.crayonsmp.gui;
 
-import net.crayonsmp.Main;
-import net.crayonsmp.managers.GoalManager;
+import net.crayonsmp.services.GoalService;
 import net.crayonsmp.utils.*;
+import net.crayonsmp.utils.goal.GoalInventory;
+import net.crayonsmp.enums.GoalType;
+import net.crayonsmp.utils.goal.Magic;
+import net.crayonsmp.utils.goal.PlayerGoal;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -21,7 +24,7 @@ public class GoalMenuListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
         Player p = event.getPlayer();
-        if(!GoalManager.hasPlayerGoalData(p)){
+        if(!GoalService.hasPlayerGoalData(p)){
             GoalMenu.openGoalMenu(p);
         }
     }
@@ -30,33 +33,32 @@ public class GoalMenuListener implements Listener {
     public void onPlayerCloseInv(InventoryCloseEvent event){
         Player p = (Player) event.getPlayer();
 
-        if(GoalMenu.goalInventories.containsKey(p) && !GoalManager.hasPlayerGoalData(p)){
+        if(GoalMenu.goalInventories.containsKey(p) && !GoalService.hasPlayerGoalData(p)){
             GoalInventory goalInventory = GoalMenu.goalInventories.get(p);
             if (goalInventory.selectetPlaceholder != null && goalInventory.selectetPrimaryMagic != null && goalInventory.selectetSecondaryMagic != null){
                 if (goalInventory.selectetPlaceholder.equals(GoalType.good)) {
-                    GoalManager.addPlayerGoalData(p.getUniqueId().toString(), new PlayerGoal(goalInventory.getGoodPlaceholder().getGoal(), goalInventory.selectetPrimaryMagic, goalInventory.selectetSecondaryMagic));
+                    GoalService.addPlayerGoalData(p.getUniqueId().toString(), new PlayerGoal(goalInventory.getGoodPlaceholder().getGoal(), goalInventory.selectetPrimaryMagic, goalInventory.selectetSecondaryMagic));
                     GoalMenu.goalInventories.remove(p);
                     p.sendMessage("You can always look at your goal with /goal");
                 }
                 else if (goalInventory.selectetPlaceholder.equals(GoalType.neutral)) {
-                    GoalManager.addPlayerGoalData(p.getUniqueId().toString(), new PlayerGoal(goalInventory.getNeutralPlaceholder().getGoal(), goalInventory.selectetPrimaryMagic, goalInventory.selectetSecondaryMagic));
+                    GoalService.addPlayerGoalData(p.getUniqueId().toString(), new PlayerGoal(goalInventory.getNeutralPlaceholder().getGoal(), goalInventory.selectetPrimaryMagic, goalInventory.selectetSecondaryMagic));
                     GoalMenu.goalInventories.remove(p);
                     p.sendMessage("You can always look at your goal with /goal");
                 }
                 else if (goalInventory.selectetPlaceholder.equals(GoalType.bad)) {
-                    GoalManager.addPlayerGoalData(p.getUniqueId().toString(), new PlayerGoal(goalInventory.getBadPlaceholder().getGoal(), goalInventory.selectetPrimaryMagic, goalInventory.selectetSecondaryMagic));
+                    GoalService.addPlayerGoalData(p.getUniqueId().toString(), new PlayerGoal(goalInventory.getBadPlaceholder().getGoal(), goalInventory.selectetPrimaryMagic, goalInventory.selectetSecondaryMagic));
                     GoalMenu.goalInventories.remove(p);
                     p.sendMessage("You can always look at your goal with /goal");
                 }
                 } else {
                 Bukkit.getScheduler().runTaskLater(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("CrayonCore")), () -> {
-                    // Zusätzliche Prüfungen, um sicherzustellen, dass der Spieler noch online und gültig ist
                     if (p.isOnline() && GoalMenu.goalInventories.containsKey(p)) {
                         p.openInventory(goalInventory.getInv());
                     }
                 }, 1L);
             }
-        } else if (GoalMenu.goalInventories.containsKey(p) && GoalManager.hasPlayerGoalData(p)) {
+        } else if (GoalMenu.goalInventories.containsKey(p) && GoalService.hasPlayerGoalData(p)) {
             GoalMenu.goalInventories.remove(p);
         }
     }
@@ -78,7 +80,6 @@ public class GoalMenuListener implements Listener {
                     if (Goalinv.getSelectetPlaceholder() != GoalType.good) {
                         Goalinv.setSelectetPlaceholder(GoalType.good);
                         GoalMenu.setDefaultModelData(Goalinv); // Resets all to default (unselected)
-                        // Highlight the specific "main" GoodGoal button at slot 0
                         inv.setItem(0, new ItemBuilder().setMeterial(Material.IRON_NUGGET).sethidetooltip(true).setCustomModelData(2001).build());
                         Goalinv.setSelectetPrimaryMagic(null);
                         Goalinv.setSelectetSecondaryMagic(null);
@@ -91,7 +92,6 @@ public class GoalMenuListener implements Listener {
                     if (Goalinv.getSelectetPlaceholder() != GoalType.neutral) {
                         Goalinv.setSelectetPlaceholder(GoalType.neutral);
                         GoalMenu.setDefaultModelData(Goalinv); // Resets all to default
-                        // Highlight the specific "main" NeutralGoal button at slot 3
                         inv.setItem(3, new ItemBuilder().setMeterial(Material.IRON_NUGGET).sethidetooltip(true).setCustomModelData(2002).build());
                         Goalinv.setSelectetPrimaryMagic(null);
                         Goalinv.setSelectetSecondaryMagic(null);

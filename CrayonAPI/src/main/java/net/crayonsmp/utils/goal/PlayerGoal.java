@@ -1,4 +1,4 @@
-package net.crayonsmp.utils;
+package net.crayonsmp.utils.goal;
 
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -35,7 +35,6 @@ public class PlayerGoal implements ConfigurationSerializable {
         this.magicPrimery = (Magic) map.get("magicPrimery"); // Cast to Magic
         this.magicSecondary = (Magic) map.get("magicSecondary"); // Cast to Magic
 
-        // Basic validation for deserialized data
         if (this.goal == null) {
             throw new IllegalArgumentException("Deserialized PlayerGoal 'goal' cannot be null.");
         }

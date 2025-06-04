@@ -1,18 +1,19 @@
-package net.crayonsmp.managers;
+package net.crayonsmp.services;
 
 import net.crayonsmp.Main;
-import net.crayonsmp.utils.*;
 import net.crayonsmp.utils.config.SConfig;
+import net.crayonsmp.utils.goal.Goal;
+import net.crayonsmp.enums.GoalType;
+import net.crayonsmp.utils.goal.Magic;
+import net.crayonsmp.utils.goal.PlayerGoal;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ConfigManager {
+public class ConfigService {
     public static void registergoalconfig() {
         SConfig config = Main.GoalConfig;
         SConfig playergoaldata = Main.PlayerGoalData;
-        //Register Default Goals and Magics
         if (!config.getFile().isFile()) {
             config.setDefault("goals.good.good_eternal_spring.name", "Eternal Spring Sanctuary");
             config.setDefault("goals.good.good_eternal_spring.description", List.of(
@@ -42,9 +43,7 @@ public class ConfigManager {
 
             config.save();
         }
-        //----------------
 
-        //Register All Goals
         HashMap<String, Goal> goals = new HashMap<>();
         config.getConfigurationSection("goals.good").getKeys(false).forEach(key -> {
             Goal goal = new Goal(key, GoalType.good, config.getString("goals.good." + key + ".name"), config.getString("goals.good." + key + ".id"), config.getStringList("goals.good." + key + ".description"), config.getStringList("goals.good." + key + ".magics.primary"), config.getStringList("goals.good." + key + ".magics.secondary"));
@@ -59,28 +58,23 @@ public class ConfigManager {
             goals.put(goal.getID(), goal);
         });
 
-        GoalManager.registertgoals = goals;
-        //----------------
+        GoalService.RegistertGoals = goals;
 
-        //Register All Magics
         HashMap<String, Magic> magics = new HashMap<>();
         config.getConfigurationSection("magics").getKeys(false).forEach(key -> {
             Magic magic = new Magic(config.getString("magics." + key + ".id"), config.getString("magics." + key + ".name"), config.getStringList("magics." + key + ".description"), config.getStringList("magics." + key + ".theme"));
             magics.put(magic.getId(), magic);
         });
 
-        GoalManager.registertmagics = magics;
-        //----------------
+        GoalService.RegistertMagics = magics;
 
-        //Register All GoalPlayerDatas
         HashMap<String, PlayerGoal> playergoals = new HashMap<>();
         playergoaldata.getConfigurationSection("playergoals.").getKeys(false).forEach(key -> {
             PlayerGoal playerGoal = playergoaldata.getObject("playergoals." + key, PlayerGoal.class);
             playergoals.put(key, playerGoal);
         });
 
-        GoalManager.PlayerGoalData = playergoals;
-        //----------------
+        GoalService.PlayerGoalData = playergoals;
 
     }
 }

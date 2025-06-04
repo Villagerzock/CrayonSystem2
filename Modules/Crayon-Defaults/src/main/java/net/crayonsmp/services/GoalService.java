@@ -1,13 +1,12 @@
-package net.crayonsmp.managers;
+package net.crayonsmp.services;
 
 import net.crayonsmp.Main;
-import net.crayonsmp.utils.*;
+import net.crayonsmp.enums.GoalType;
+import net.crayonsmp.utils.goal.*;
 import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -15,18 +14,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-public class GoalManager {
-    //----------Utility Fields---------
+public class GoalService {
     private static final Pattern MAGIC_PROBABILITY_PATTERN = Pattern.compile("([^ ]+)(?: p=(\\d+))?");
     private static final Random random = new Random();
-    //----------Static Data (Temporary)---------
-    public static HashMap<String, Goal> registertgoals = new HashMap<>();
-//----------Static Data (Temporary)---------
-    public static HashMap<String, Magic> registertmagics = new HashMap<>();
+    public static HashMap<String, Goal> RegistertGoals = new HashMap<>();
+    public static HashMap<String, Magic> RegistertMagics = new HashMap<>();
     public static HashMap<String, PlayerGoal> PlayerGoalData = new HashMap<>();
-//----------Utility Fields---------
 
-    //----------Magic Selection Logic---------
     private static Magic selectMagicBasedOnProbability(final List<String> magicStrings, final HashMap<String, Magic> allAvailableMagics) {
         if (magicStrings == null || magicStrings.isEmpty() || allAvailableMagics == null || allAvailableMagics.isEmpty()) {
             return null;
@@ -65,46 +59,48 @@ public class GoalManager {
             return null;
         }
 
-        double randomValue = random.nextDouble() * totalProbability;
+        double RandomValue = random.nextDouble() * totalProbability;
 
         double cumulativeProbability = 0;
-        String selectedMagicId = null;
+        String SelectedMagicId = null;
 
         for (final MagicSelectionCandidate candidate : candidates) {
             cumulativeProbability += candidate.probability;
-            if (randomValue <= cumulativeProbability) {
-                selectedMagicId = candidate.id;
+            if (RandomValue <= cumulativeProbability) {
+                SelectedMagicId = candidate.id;
                 break;
             }
         }
 
-        if (selectedMagicId == null && !candidates.isEmpty()) {
-            selectedMagicId = candidates.get(candidates.size() - 1).id;
-            Bukkit.getLogger().log(Level.SEVERE, "FATAL ERROR: Probability selection logic failed to select an ID! Using last candidate. TotalProb=" + totalProbability + ", RandomValue=" + randomValue + ", Candidates=" + candidates.size());
+        if (SelectedMagicId == null && !candidates.isEmpty()) {
+            SelectedMagicId = candidates.get(candidates.size() - 1).id;
+            Bukkit.getLogger().log(Level.SEVERE, "FATAL ERROR: Probability selection logic failed to select an ID! Using last candidate. TotalProb=" + totalProbability + ", RandomValue=" + RandomValue + ", Candidates=" + candidates.size());
         }
 
 
-        if (selectedMagicId != null) {
-            return getMagicById(selectedMagicId);
+        if (SelectedMagicId != null) {
+            return getMagicById(SelectedMagicId);
         }
 
         return null;
     }
 
-    //----------Magic Lookup Helper---------
     public static Magic getMagicById(final String id) {
-        return registertmagics.get(id);
+        return RegistertMagics.get(id);
     }
-//----------Magic Selection Logic---------
+
+    public static Goal getGoalById(final String id) {
+        return RegistertGoals.get(id);
+    }
 
     public static Goal getRandomGoalByType(GoalType type) {
-        if (registertgoals.isEmpty()) {
+        if (RegistertGoals.isEmpty()) {
             Bukkit.getLogger().log(Level.WARNING, "No goals are registered to select from.");
             return null;
         }
 
         final List<Goal> availableGoals = new ArrayList<>();
-        for (Goal goal : registertgoals.values()) {
+        for (Goal goal : RegistertGoals.values()) {
             if (goal.getGoalType() == type) {
                 availableGoals.add(goal);
             }
@@ -117,18 +113,16 @@ public class GoalManager {
 
         return availableGoals.get(random.nextInt(availableGoals.size()));
     }
-//----------Magic Lookup Helper---------
 
-    //----------Placeholder Creation---------
     public static PlayerGoalPlaceholder getPlayerGoalPlaceholder(Goal goal) {
         if (goal == null) {
             Bukkit.getLogger().log(Level.WARNING, "Attempted to get PlayerGoalPlaceholder for a null GoalTemplate.");
         }
 
-        final HashMap<String, Magic> allAvailableMagics = registertmagics;
+        final HashMap<String, Magic> AllAvailableMagics = RegistertMagics;
 
-        final List<Magic> magicPrimaryList = new ArrayList<>();
-        final List<Magic> magicSecondaryList = new ArrayList<>();
+        final List<Magic> MagicPrimaryList = new ArrayList<>();
+        final List<Magic> MagicSecondaryList = new ArrayList<>();
 
         final int numberOfPrimaryMagicsToSelect = 3;
         final int numberOfSecondaryMagicsToSelect = 2;
@@ -140,23 +134,18 @@ public class GoalManager {
         for (int i = 0; i < numberOfPrimaryMagicsToSelect; i++) {
             Magic selectedMagic = null;
             int attempts = 0;
-            // Versuche, eine einzigartige Magie zu finden
             while (attempts < maxRetries) {
-                selectedMagic = selectMagicBasedOnProbability(primaryMagicConfigs, allAvailableMagics);
+                selectedMagic = selectMagicBasedOnProbability(primaryMagicConfigs, AllAvailableMagics);
 
                 if (selectedMagic == null) {
-                    // Wenn keine Magie ausgewählt werden konnte, breche ab
                     break;
                 }
 
-                // Überprüfe, ob diese Magie bereits in der Liste ist
                 if (!selectedPrimaryMagicNames.contains(selectedMagic.getName())) {
-                    // Einzigartige Magie gefunden, füge sie hinzu und beende den Versuch
-                    magicPrimaryList.add(selectedMagic);
+                    MagicPrimaryList.add(selectedMagic);
                     selectedPrimaryMagicNames.add(selectedMagic.getName());
-                    break; // Schleife beenden, da eine einzigartige Magie gefunden wurde
+                    break;
                 } else {
-                    // Magie ist bereits ausgewählt, versuche es erneut
                     attempts++;
                     Bukkit.getLogger().log(Level.FINE, "Duplicate primary magic '" + selectedMagic.getName() + "' selected. Retrying... (Attempt " + attempts + ")");
                 }
@@ -173,23 +162,18 @@ public class GoalManager {
         for (int i = 0; i < numberOfSecondaryMagicsToSelect; i++) {
             Magic selectedMagic = null;
             int attempts = 0;
-            // Versuche, eine einzigartige Magie zu finden
             while (attempts < maxRetries) {
-                selectedMagic = selectMagicBasedOnProbability(secondaryMagicConfigs, allAvailableMagics);
+                selectedMagic = selectMagicBasedOnProbability(secondaryMagicConfigs, AllAvailableMagics);
 
                 if (selectedMagic == null) {
-                    // Wenn keine Magie ausgewählt werden konnte, breche ab
                     break;
                 }
 
-                // Überprüfe, ob diese Magie bereits in der Liste ist
                 if (!selectedSecondaryMagicNames.contains(selectedMagic.getName())) {
-                    // Einzigartige Magie gefunden, füge sie hinzu und beende den Versuch
-                    magicSecondaryList.add(selectedMagic);
+                    MagicSecondaryList.add(selectedMagic);
                     selectedSecondaryMagicNames.add(selectedMagic.getName());
-                    break; // Schleife beenden, da eine einzigartige Magie gefunden wurde
+                    break;
                 } else {
-                    // Magie ist bereits ausgewählt, versuche es erneut
                     attempts++;
                     Bukkit.getLogger().log(Level.FINE, "Duplicate secondary magic '" + selectedMagic.getName() + "' selected. Retrying... (Attempt " + attempts + ")");
                 }
@@ -200,48 +184,60 @@ public class GoalManager {
             }
         }
 
-        return new PlayerGoalPlaceholder(goal, magicPrimaryList, magicSecondaryList);
+        return new PlayerGoalPlaceholder(goal, MagicPrimaryList, MagicSecondaryList);
     }
 
     public static void addPlayerGoalData(String uuid, PlayerGoal playerGoal) {
-        PlayerGoalData.put(uuid, playerGoal); // Keep consistent for in-memory access
-        Main.PlayerGoalData.set("playergoals." + uuid, playerGoal); // For persistent storage
+        PlayerGoalData.put(uuid, playerGoal);
+        Main.PlayerGoalData.set("playergoals." + uuid, playerGoal);
         Main.PlayerGoalData.save();
 
         Player p = Bukkit.getPlayer(UUID.fromString(uuid));
 
         if(p != null) {
-            if (playerGoal.getMagicPrimery().getId().equals("FIRE"))
-                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "n give fire_scythe 1 " + p.getName());
+            String magicPrimaryId = playerGoal.getMagicPrimery().getId();
+            String command = "n give ";
 
-            if (playerGoal.getMagicPrimery().getId().equals("ICE"))
-                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "n give ice_katana 1 " + p.getName());
+            switch (magicPrimaryId) {
+                case "FIRE":
+                    command += "fire_scythe 1 ";
+                    break;
+                case "ICE":
+                    command += "ice_katana 1 ";
+                    break;
+                case "LIGHT":
+                    command += "light_greatsword 1 ";
+                    break;
+                case "DARKNESS":
+                    command += "darkness_katana 1 ";
+                    break;
+                case "LAVA":
+                    command += "magma_sledge 1 ";
+                    break;
+                case "EATH": // Note: You have "EATH" here, not "EARTH". Is that intentional?
+                    command += "earth_hammer 1 ";
+                    break;
+                case "LIGHTNING":
+                    command += "mjolnir 1 ";
+                    break;
+                case "WATER":
+                    command += "water_trident 1 ";
+                    break;
+                case "POISON":
+                    command += "poisonous_dagger 1 ";
+                    break;
+                case "WIND":
+                    command += "wind_fan 1 ";
+                    break;
+                default:
+                    System.out.println("Unknown MagicPrimary ID: " + magicPrimaryId);
+                    return;
+            }
 
-            if (playerGoal.getMagicPrimery().getId().equals("LIGHT"))
-                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "n give light_greatsword 1 " + p.getName());
-
-            if (playerGoal.getMagicPrimery().getId().equals("DARKNESS"))
-                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "n give darkness_katana 1 " + p.getName());
-
-            if (playerGoal.getMagicPrimery().getId().equals("LAVA"))
-                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "n give magma_sledge 1 " + p.getName());
-
-            if (playerGoal.getMagicPrimery().getId().equals("EATH"))
-                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "n give earth_hammer 1 " + p.getName());
-
-            if (playerGoal.getMagicPrimery().getId().equals("LIGHTNING"))
-                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "n give mjolnir 1 " + p.getName());
-
-            if (playerGoal.getMagicPrimery().getId().equals("WATER"))
-                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "n give water_trident 1 " + p.getName());
-
-            if (playerGoal.getMagicPrimery().getId().equals("POISON"))
-                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "n give poisonous_dagger 1 " + p.getName());
-
+            Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command + p.getName());
             ApplySeconderyEffects(p);
         }
     }
-//----------Placeholder Creation---------
 
     public static void removePlayerGoalData(String uuid) {
         PlayerGoalData.remove(uuid);
@@ -290,10 +286,6 @@ public class GoalManager {
         activeAttributeModifiers.putIfAbsent(playerUUID, new HashMap<>());
 
         if (hasPlayerMagicSeconderyType(player, "WATER")) {
-            // For water breathing, you'll need to handle it with an event listener as there's no direct attribute.
-            // This example focuses purely on attributes. You would implement custom logic for water breathing
-            // (e.g., cancelling drowning damage, refilling air) in a separate method or event handler.
-            // For the "Dolphin's Grace" aspect (movement speed), an attribute can be used.
             applyAttribute(player, "WATER_MOVEMENT", Attribute.WATER_MOVEMENT_EFFICIENCY, 0.3, AttributeModifier.Operation.ADD_NUMBER);
         } else {
             removeAttribute(player, "WATER_MOVEMENT", Attribute.WATER_MOVEMENT_EFFICIENCY);
