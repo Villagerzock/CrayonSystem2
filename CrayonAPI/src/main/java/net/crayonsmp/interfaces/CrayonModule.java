@@ -4,6 +4,8 @@ package net.crayonsmp.interfaces;
 import dev.turingcomplete.textcaseconverter.StandardTextCases;
 import dev.turingcomplete.textcaseconverter.StandardWordsSplitters;
 import net.crayonsmp.CrayonAPI;
+import net.crayonsmp.PluginProvider;
+import net.crayonsmp.crafting.CustomCrafting;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.PluginCommand;
@@ -16,11 +18,17 @@ import java.lang.reflect.InvocationTargetException;
 
 public interface CrayonModule {
     String getName();
+    String getID();
     default String getAuthor(){return "";}
     String getVersion();
+    default void addCraftingTypes(){}
     default void onLoad(CrayonAPI api) {} // oder einfach kein Parameter
     <API extends Plugin & CrayonAPI> void onEnable(API plugin);
     default void onDisable() {}
+    default void addCustomCraftingType(String name, CustomCrafting.CustomCraftingType<?> type){
+        PluginProvider.plugin.getLogger().info("Adding Custom Type: " + getID() + ":" + name);
+        CustomCrafting.TYPES.put(getID() + ":" + name, type);
+    }
     default PluginCommand registerCommand(String name, Plugin plugin) {
         try {
             Constructor<PluginCommand> pluginCommandConstructor = PluginCommand.class.getDeclaredConstructor(String.class,Plugin.class);

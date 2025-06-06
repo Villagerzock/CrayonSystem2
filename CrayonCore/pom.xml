@@ -94,5 +94,15 @@
       <artifactId>crayon-defaults</artifactId>
       <version>1.0-Crayon</version>
     </dependency>
+    <dependency>
+      <groupId>net.crayonsmp</groupId>
+      <artifactId>Villagerzock</artifactId>
+      <version>1.0-Crayon</version>
+    </dependency>
+    <dependency>
+      <groupId>net.crayonsmp</groupId>
+      <artifactId>Feywood</artifactId>
+      <version>1.0-Crayon</version>
+    </dependency>
   </dependencies>
 </project>

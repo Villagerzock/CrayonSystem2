@@ -48,6 +48,7 @@ public class Main implements CrayonModule {
         registerCommand("removegoal", plugin).setExecutor(new removeGoalCommand());
         registerCommand("crayonreload", plugin).setExecutor(new CrayonReloadCommand());
         registerCommand("magicinfo", plugin).setExecutor(new MagicInfoCommand());
+        registerCommand("cr",plugin).setExecutor(new CustomRecipesCommand());
 
         plugin.getServer().getPluginManager().registerEvents(new DebugListener(), plugin);
         plugin.getServer().getPluginManager().registerEvents(new GoalMenuListener(), plugin);
@@ -78,6 +79,11 @@ public class Main implements CrayonModule {
     @Override
     public String getName() {
         return "Crayon-Defaults";
+    }
+
+    @Override
+    public String getID() {
+        return "crayon_defaults";
     }
 
     @Override

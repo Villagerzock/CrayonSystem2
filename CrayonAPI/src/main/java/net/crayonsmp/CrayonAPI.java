@@ -2,6 +2,7 @@ package net.crayonsmp;
 
 import net.crayonsmp.interfaces.CrayonGoalService;
 import net.crayonsmp.interfaces.CrayonModule;
+import org.bukkit.plugin.Plugin;
 
 import java.util.List;
 import java.util.logging.Logger;

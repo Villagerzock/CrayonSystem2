@@ -1,6 +1,9 @@
 package net.crayonsmp.crayonCore;
 
 import net.crayonsmp.CrayonAPI;
+import net.crayonsmp.Main;
+import net.crayonsmp.PluginProvider;
+import net.crayonsmp.crafting.CustomCrafting;
 import net.crayonsmp.interfaces.CrayonGoalService;
 import net.crayonsmp.interfaces.CrayonModule;
 import net.crayonsmp.utils.ChatUtil;
@@ -9,8 +12,10 @@ import net.crayonsmp.utils.config.SConfig;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -19,7 +24,9 @@ public class CrayonCore extends JavaPlugin implements CrayonAPI {
 
     private final List<CrayonModule> loadedModules = new ArrayList<>();
     private static SConfig config;
-
+    public CrayonCore(){
+        PluginProvider.plugin = this;
+    }
     @Override
     public void onEnable() {
 
@@ -103,6 +110,7 @@ public class CrayonCore extends JavaPlugin implements CrayonAPI {
                 if (isDebugMode()) getLogger().info("  Successfully instantiated " + moduleClassName);
 
                 if (isDebugMode()) getLogger().info("  Calling onLoad() for " + module.getName() + " (" + moduleClassName + ")...");
+                module.addCraftingTypes();
                 module.onLoad(this);
                 if (isDebugMode()) getLogger().info("  Finished onLoad() for " + module.getName());
 
@@ -114,7 +122,9 @@ public class CrayonCore extends JavaPlugin implements CrayonAPI {
                 getLogger().log(Level.SEVERE, "!!! CRITICAL FAILURE loading module: " + moduleClassName + " !!!", e);
             }
         }
+
         getLogger().info("Finished module loading sequence. Total modules loaded: " + loadedModules.size());
+        CustomCrafting.reloadRecipes();
     }
 
     @Override
