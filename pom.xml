@@ -15,6 +15,7 @@
         <module>CrayonCore</module>
         <module>CrayonAPI</module>
         <module>Modules/Crayon-Defaults</module>
+        <module>Modules/TerroUtils</module>
     </modules>
 
 
