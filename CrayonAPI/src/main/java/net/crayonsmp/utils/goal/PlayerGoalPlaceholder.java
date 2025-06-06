@@ -1,4 +1,4 @@
-package net.crayonsmp.utils;
+package net.crayonsmp.utils.goal;
 
 
 import java.util.List;

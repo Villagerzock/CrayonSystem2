@@ -1,5 +1,6 @@
-package net.crayonsmp.utils;
+package net.crayonsmp.utils.goal;
 
+import net.crayonsmp.enums.GoalType;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 
@@ -33,7 +34,6 @@ public class Goal implements ConfigurationSerializable {
         if (goalType == null) {
             throw new IllegalArgumentException("GoalTemplate goalType cannot be null.");
         }
-        // Name darf leer sein, aber trimmen
         this.name = (name != null) ? name.trim() : "";
         this.ID = ID.trim();
 
@@ -41,13 +41,11 @@ public class Goal implements ConfigurationSerializable {
         this.configKey = configKey.trim();
         this.goalType = goalType;
 
-        // Defensive Kopien erstellen und als unveränderliche Listen speichern
         this.description = (description != null) ? Collections.unmodifiableList(new ArrayList<>(description)) : Collections.emptyList();
         this.primaryMagicConfigs = (primaryMagicConfigs != null) ? Collections.unmodifiableList(new ArrayList<>(primaryMagicConfigs)) : Collections.emptyList();
         this.secondaryMagicConfigs = (secondaryMagicConfigs != null) ? Collections.unmodifiableList(new ArrayList<>(secondaryMagicConfigs)) : Collections.emptyList();
     }
 
-    // --- Getter-Methoden ---
 
     public String getConfigKey() {
         return configKey;
@@ -77,14 +75,12 @@ public class Goal implements ConfigurationSerializable {
         return secondaryMagicConfigs;
     }
 
-    // --- Optional: equals, hashCode und toString für gute Praxis ---
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Goal that = (Goal) o;
-        // Templates sind gleich, wenn configKey und goalType übereinstimmen
         return configKey.equals(that.configKey) && goalType == that.goalType;
     }
 
@@ -113,12 +109,10 @@ public class Goal implements ConfigurationSerializable {
         this.primaryMagicConfigs = (List<String>) map.get("primaryMagicConfigs");
         this.secondaryMagicConfigs = (List<String>) map.get("secondaryMagicConfigs");
 
-        // Defensive copying for lists
         this.description = (this.description != null) ? Collections.unmodifiableList(new ArrayList<>(this.description)) : Collections.emptyList();
         this.primaryMagicConfigs = (this.primaryMagicConfigs != null) ? Collections.unmodifiableList(new ArrayList<>(this.primaryMagicConfigs)) : Collections.emptyList();
         this.secondaryMagicConfigs = (this.secondaryMagicConfigs != null) ? Collections.unmodifiableList(new ArrayList<>(this.secondaryMagicConfigs)) : Collections.emptyList();
 
-        // Basic validation for deserialized data
         if (this.configKey == null || this.configKey.trim().isEmpty()) {
             throw new IllegalArgumentException("Deserialized Goal 'configKey' cannot be null or empty.");
         }

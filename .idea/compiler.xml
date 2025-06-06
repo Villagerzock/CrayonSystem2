@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="crayon-defaults" />
+        <module name="TerroUtils" />
         <module name="CrayonAPI" />
         <module name="Villagerzock" />
         <module name="CrayonCore" />

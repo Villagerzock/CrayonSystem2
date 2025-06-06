@@ -1,5 +1,6 @@
 package net.crayonsmp;
 
+import net.crayonsmp.interfaces.CrayonGoalService;
 import net.crayonsmp.interfaces.CrayonModule;
 
 import java.util.List;
@@ -10,5 +11,6 @@ public interface CrayonAPI {
     List<CrayonModule> loadedModules();
     Boolean isDebugMode();
     String getPrefix();
+    CrayonGoalService CrayonGoalService();
 }
 

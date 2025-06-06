@@ -1,4 +1,4 @@
-package net.crayonsmp.utils;
+package net.crayonsmp.enums;
 
 public enum GoalType {
     good,

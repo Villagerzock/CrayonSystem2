@@ -1,15 +1,14 @@
 package net.crayonsmp.commands;
 
-import net.crayonsmp.managers.GoalManager;
-import net.crayonsmp.utils.Goal;
-import net.crayonsmp.utils.Magic;
-import net.crayonsmp.utils.PlayerGoal;
+import net.crayonsmp.services.GoalService;
+import net.crayonsmp.utils.goal.Goal;
+import net.crayonsmp.utils.goal.Magic;
+import net.crayonsmp.utils.goal.PlayerGoal;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 public class SetGoalCommand implements CommandExecutor {
     @Override
@@ -22,14 +21,14 @@ public class SetGoalCommand implements CommandExecutor {
         }
         if(args.length == 4){
                     if (taget != null) {
-                        Goal goal = GoalManager.registertgoals.get(args[1]);
-                        Magic primaryMagic = GoalManager.getMagicById(args[2]);
-                        Magic secondaryMagic = GoalManager.getMagicById(args[3]); // Corrected to args[3]
+                        Goal goal = GoalService.RegistertGoals.get(args[1]);
+                        Magic primaryMagic = GoalService.getMagicById(args[2]);
+                        Magic secondaryMagic = GoalService.getMagicById(args[3]); // Corrected to args[3]
 
                         if (goal == null) {
                             sender.sendMessage("Error: Goal '" + args[1] + "' not found.");
                             sender.sendMessage("all registert goals:");
-                            GoalManager.registertgoals.forEach((key, value) -> sender.sendMessage(key));
+                            GoalService.RegistertGoals.forEach((key, value) -> sender.sendMessage(key));
                             return true;
                         }
                         if (primaryMagic == null) {
@@ -41,7 +40,7 @@ public class SetGoalCommand implements CommandExecutor {
                             return true;
                         }
 
-                        GoalManager.addPlayerGoalData(taget.getUniqueId().toString(), new PlayerGoal(goal, primaryMagic, secondaryMagic));
+                        GoalService.addPlayerGoalData(taget.getUniqueId().toString(), new PlayerGoal(goal, primaryMagic, secondaryMagic));
                         taget.sendMessage("Your goal has been set to " + args[1]);
                         sender.sendMessage("Set goal for player " + taget.getName() + " to '" + goal.getName() + "' with primary magic '" + primaryMagic.getName() + "' and secondary magic '" + secondaryMagic.getName() + "'.");
                         return true;
