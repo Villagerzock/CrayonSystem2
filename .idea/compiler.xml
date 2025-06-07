@@ -7,12 +7,14 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="crayon-defaults" />
-        <module name="TerroUtils" />
         <module name="CrayonAPI" />
         <module name="Feywood" />
         <module name="Villagerzock" />
         <module name="CrayonCore" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="TerroUtils" target="21" />
+    </bytecodeTargetLevel>
   </component>
 </project>
