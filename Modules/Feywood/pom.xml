@@ -2,9 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
     <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <groupId>net.crayonsmp</groupId>
         <artifactId>crayonsystem</artifactId>
@@ -12,20 +10,19 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>crayon-defaults</artifactId>
+    <artifactId>Feywood</artifactId>
 
+    <properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <dependencies>
         <dependency>
             <groupId>net.crayonsmp</groupId>
             <artifactId>CrayonAPI</artifactId>
             <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>net.crayonsmp</groupId>
-            <artifactId>Feywood</artifactId>
-            <version>1.0-Crayon</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

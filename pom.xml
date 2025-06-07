@@ -16,6 +16,8 @@
         <module>CrayonAPI</module>
         <module>Modules/Crayon-Defaults</module>
         <module>Modules/TerroUtils</module>
+        <module>Modules/Feywood</module>
+        <module>Modules/Villagerzock</module>
     </modules>
 
 
