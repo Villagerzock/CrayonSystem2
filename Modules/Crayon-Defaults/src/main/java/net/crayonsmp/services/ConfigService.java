@@ -1,6 +1,6 @@
 package net.crayonsmp.services;
 
-import net.crayonsmp.Main;
+import net.crayonsmp.CrayonDefault;
 import net.crayonsmp.utils.config.SConfig;
 import net.crayonsmp.utils.goal.Goal;
 import net.crayonsmp.enums.GoalType;
@@ -12,8 +12,8 @@ import java.util.List;
 
 public class ConfigService {
     public static void registergoalconfig() {
-        SConfig config = Main.GoalConfig;
-        SConfig playergoaldata = Main.PlayerGoalData;
+        SConfig config = CrayonDefault.GoalConfig;
+        SConfig playergoaldata = CrayonDefault.PlayerGoalData;
         if (!config.getFile().isFile()) {
             config.setDefault("goals.good.good_eternal_spring.name", "Eternal Spring Sanctuary");
             config.setDefault("goals.good.good_eternal_spring.description", List.of(

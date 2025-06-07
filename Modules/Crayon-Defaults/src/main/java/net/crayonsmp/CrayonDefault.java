@@ -17,7 +17,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class Main implements CrayonModule {
+public class CrayonDefault implements CrayonModule {
 
 
     public DatapackService datapackManager;

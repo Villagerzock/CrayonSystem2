@@ -1,7 +1,6 @@
 package net.crayonsmp.crayonCore;
 
 import net.crayonsmp.CrayonAPI;
-import net.crayonsmp.Main;
 import net.crayonsmp.PluginProvider;
 import net.crayonsmp.crafting.CustomCrafting;
 import net.crayonsmp.interfaces.CrayonGoalService;
@@ -12,10 +11,8 @@ import net.crayonsmp.utils.config.SConfig;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
 
