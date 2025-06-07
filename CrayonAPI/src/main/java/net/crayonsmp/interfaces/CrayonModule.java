@@ -3,6 +3,7 @@ package net.crayonsmp.interfaces;
 
 import dev.turingcomplete.textcaseconverter.StandardTextCases;
 import dev.turingcomplete.textcaseconverter.StandardWordsSplitters;
+import dev.turingcomplete.textcaseconverter.TextCase;
 import net.crayonsmp.CrayonAPI;
 import net.crayonsmp.PluginProvider;
 import net.crayonsmp.crafting.CustomCrafting;
@@ -18,7 +19,9 @@ import java.lang.reflect.InvocationTargetException;
 
 public interface CrayonModule {
     String getName();
-    String getID();
+    default String getID(){
+        return StandardTextCases.SNAKE_CASE.convert(getName(), StandardWordsSplitters.SPACES);
+    }
     default String getAuthor(){return "";}
     String getVersion();
     default void addCraftingTypes(){}
