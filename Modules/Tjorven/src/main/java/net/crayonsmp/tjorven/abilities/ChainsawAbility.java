@@ -22,10 +22,13 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 
-@RequiredArgsConstructor
 public class ChainsawAbility implements Listener {
 
     private final Plugin plugin;
+
+    public ChainsawAbility(Plugin plugin) {
+        this.plugin = plugin;
+    }
 
     @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {

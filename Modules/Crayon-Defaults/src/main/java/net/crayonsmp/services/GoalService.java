@@ -189,8 +189,8 @@ public class GoalService {
 
     public static void addPlayerGoalData(String uuid, PlayerGoal playerGoal) {
         PlayerGoalData.put(uuid, playerGoal);
-        CrayonDefault.PlayerGoalData.set("playergoals." + uuid, playerGoal);
-        CrayonDefault.PlayerGoalData.save();
+        CrayonDefault.playerGoalData.set("playergoals." + uuid, playerGoal);
+        CrayonDefault.playerGoalData.save();
 
         Player p = Bukkit.getPlayer(UUID.fromString(uuid));
 
@@ -241,8 +241,8 @@ public class GoalService {
 
     public static void removePlayerGoalData(String uuid) {
         PlayerGoalData.remove(uuid);
-        CrayonDefault.PlayerGoalData.set("playergoals." + uuid, null);
-        CrayonDefault.PlayerGoalData.save();
+        CrayonDefault.playerGoalData.set("playergoals." + uuid, null);
+        CrayonDefault.playerGoalData.save();
     }
 
     public static boolean hasPlayerGoalData(Player p) {

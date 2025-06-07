@@ -18,6 +18,7 @@ import java.util.List;
 public class ItemBuilder {
     ItemStack item;
     ItemMeta itemMeta;
+
     public static ItemStack makeFromID(String id){
         String[] idSplitted = id.split(":");
         if (idSplitted.length == 0 || idSplitted[0].equals("minecraft")){
@@ -31,6 +32,7 @@ public class ItemBuilder {
             return NexoItems.itemFromId(idSplitted[1]).build();
         }
     }
+
     public ItemBuilder setMeterial(Material material) {
         item = new ItemStack(material);
         itemMeta = item.getItemMeta();
