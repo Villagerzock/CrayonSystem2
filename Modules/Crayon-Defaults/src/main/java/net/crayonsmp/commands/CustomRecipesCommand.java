@@ -1,10 +1,12 @@
 package net.crayonsmp.commands;
 
 import net.crayonsmp.crafting.CustomCrafting;
+import net.crayonsmp.gui.FeywoodTableScreen;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,6 +28,10 @@ public class CustomRecipesCommand implements TabExecutor {
                         commandSender.sendMessage("The Recipe looks the Following:");
                         crafting.sendRecipe(commandSender);
                     }
+            }
+        }else {
+            if (commandSender instanceof Player player){
+                player.openInventory(new FeywoodTableScreen(player));
             }
         }
         return true;
