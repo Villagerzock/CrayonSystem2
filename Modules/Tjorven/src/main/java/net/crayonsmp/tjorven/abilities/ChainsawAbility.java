@@ -1,8 +1,6 @@
 package net.crayonsmp.tjorven.abilities;
 
 import com.nexomc.nexo.api.NexoItems;
-import com.nexomc.nexo.items.ItemBuilder;
-import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Location;
@@ -14,7 +12,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
 import java.util.HashSet;
 import java.util.List;
@@ -22,29 +19,17 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 
-@RequiredArgsConstructor
 public class ChainsawAbility implements Listener {
 
-    private final Plugin plugin;
-
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
         Block block = event.getBlock();
 
-        ItemBuilder chainsaw = NexoItems.itemFromId("chainsaw");
-        if (chainsaw == null) {
-            return;
-        }
-
         ItemStack itemStack = player.getInventory().getItem(EquipmentSlot.HAND);
 
-        if (!itemStack.hasItemMeta() || !itemStack.getItemMeta().hasCustomModelData()) {
-            return;
-        }
-
-        if (chainsaw.getType() != itemStack.getType()
-            && chainsaw.build().getItemMeta().getCustomModelData() != itemStack.getItemMeta().getCustomModelData()) {
+        String chainsaw = NexoItems.idFromItem(itemStack);
+        if (chainsaw == null || !chainsaw.equals("chainsaw")) {
             return;
         }
 
