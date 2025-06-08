@@ -4,6 +4,7 @@ import net.crayonsmp.CrayonAPI;
 import net.crayonsmp.interfaces.CrayonModule;
 import net.crayonsmp.tjorven.abilities.BlockTeleport;
 import net.crayonsmp.tjorven.abilities.ChainsawAbility;
+import net.crayonsmp.tjorven.abilities.DrillAbility;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
@@ -24,6 +25,7 @@ public class TjorvenModule implements CrayonModule {
         PluginManager pluginManager = plugin.getServer().getPluginManager();
 
         pluginManager.registerEvents(new BlockTeleport(plugin), plugin);
-        pluginManager.registerEvents(new ChainsawAbility(plugin), plugin);
+        pluginManager.registerEvents(new ChainsawAbility(), plugin);
+        pluginManager.registerEvents(new DrillAbility(plugin), plugin);
     }
 }
