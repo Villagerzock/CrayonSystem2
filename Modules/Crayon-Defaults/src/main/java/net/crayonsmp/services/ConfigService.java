@@ -12,8 +12,8 @@ import java.util.List;
 
 public class ConfigService {
     public static void registergoalconfig() {
-        SConfig config = CrayonDefault.GoalConfig;
-        SConfig playergoaldata = CrayonDefault.PlayerGoalData;
+        SConfig config = CrayonDefault.goalConfig;
+        SConfig playergoaldata = CrayonDefault.playerGoalData;
         if (!config.getFile().isFile()) {
             config.setDefault("goals.good.good_eternal_spring.name", "Eternal Spring Sanctuary");
             config.setDefault("goals.good.good_eternal_spring.description", List.of(

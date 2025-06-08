@@ -21,6 +21,12 @@ import java.util.function.Predicate;
 
 public class ChainsawAbility implements Listener {
 
+    private final Plugin plugin;
+
+    public ChainsawAbility(Plugin plugin) {
+        this.plugin = plugin;
+    }
+
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();

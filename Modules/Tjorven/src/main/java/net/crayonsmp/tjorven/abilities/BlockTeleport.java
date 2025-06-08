@@ -1,6 +1,5 @@
 package net.crayonsmp.tjorven.abilities;
 
-import lombok.RequiredArgsConstructor;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -16,10 +15,13 @@ import org.bukkit.plugin.Plugin;
 import java.util.HashSet;
 import java.util.Set;
 
-@RequiredArgsConstructor
 public class BlockTeleport implements Listener {
 
     private final Plugin plugin;
+
+    public BlockTeleport(Plugin plugin) {
+        this.plugin = plugin;
+    }
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
