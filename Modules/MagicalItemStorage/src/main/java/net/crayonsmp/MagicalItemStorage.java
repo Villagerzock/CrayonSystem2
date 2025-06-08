@@ -1,5 +1,6 @@
 package net.crayonsmp;
 
+import com.nexomc.nexo.api.NexoItems;
 import net.crayonsmp.interfaces.CrayonModule;
 import net.crayonsmp.interfaces.MISBlock;
 import net.crayonsmp.objects.MISNetwork;
@@ -13,7 +14,7 @@ public class MagicalItemStorage implements CrayonModule {
     @Override
     public <API extends Plugin & CrayonAPI> void onEnable(API plugin) {
         MagicalItemStorage.plugin = plugin;
-
+        
 
     }
 
