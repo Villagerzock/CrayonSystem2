@@ -25,7 +25,7 @@ public class TjorvenModule implements CrayonModule {
         PluginManager pluginManager = plugin.getServer().getPluginManager();
 
         pluginManager.registerEvents(new BlockTeleport(plugin), plugin);
-        pluginManager.registerEvents(new ChainsawAbility(), plugin);
+        pluginManager.registerEvents(new ChainsawAbility(plugin), plugin);
         pluginManager.registerEvents(new DrillAbility(plugin), plugin);
     }
 }
