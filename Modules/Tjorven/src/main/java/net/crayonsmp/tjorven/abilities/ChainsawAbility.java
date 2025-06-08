@@ -1,8 +1,6 @@
 package net.crayonsmp.tjorven.abilities;
 
 import com.nexomc.nexo.api.NexoItems;
-import com.nexomc.nexo.items.ItemBuilder;
-import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Location;
@@ -30,24 +28,15 @@ public class ChainsawAbility implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
         Block block = event.getBlock();
 
-        ItemBuilder chainsaw = NexoItems.itemFromId("chainsaw");
-        if (chainsaw == null) {
-            return;
-        }
-
         ItemStack itemStack = player.getInventory().getItem(EquipmentSlot.HAND);
 
-        if (!itemStack.hasItemMeta() || !itemStack.getItemMeta().hasCustomModelData()) {
-            return;
-        }
-
-        if (chainsaw.getType() != itemStack.getType()
-            && chainsaw.build().getItemMeta().getCustomModelData() != itemStack.getItemMeta().getCustomModelData()) {
+        String chainsaw = NexoItems.idFromItem(itemStack);
+        if (chainsaw == null || !chainsaw.equals("chainsaw")) {
             return;
         }
 
