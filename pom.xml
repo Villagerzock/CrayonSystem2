@@ -15,9 +15,10 @@
         <module>CrayonCore</module>
         <module>CrayonAPI</module>
         <module>Modules/Crayon-Defaults</module>
-        <module>Modules/TerroUtils</module>
         <module>Modules/Feywood</module>
         <module>Modules/Villagerzock</module>
+        <module>Modules/Tjorven</module>
+        <module>Modules/MagicalItemStorage</module>
     </modules>
 
 
@@ -133,6 +134,12 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.38</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jeff-media</groupId>
+            <artifactId>custom-block-data</artifactId>
+            <version>2.2.2</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

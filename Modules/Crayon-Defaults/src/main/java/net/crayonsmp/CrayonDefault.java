@@ -17,12 +17,12 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class Main implements CrayonModule {
+public class CrayonDefault implements CrayonModule {
 
 
     public DatapackService datapackManager;
-    public static SConfig GoalConfig;
-    public static SConfig PlayerGoalData;
+    public static SConfig goalConfig;
+    public static SConfig playerGoalData;
     public static Plugin plugin;
 
     @Override
@@ -32,13 +32,13 @@ public class Main implements CrayonModule {
 
     @Override
     public <API extends Plugin & CrayonAPI> void onEnable(API plugin) {
-        plugin = plugin;
+        CrayonDefault.plugin = plugin;
         ConfigurationSerialization.registerClass(Goal.class);
         ConfigurationSerialization.registerClass(Magic.class);
         ConfigurationSerialization.registerClass(PlayerGoal.class);
 
-        GoalConfig = ConfigUtil.getConfig("goalconfig", plugin);
-        PlayerGoalData = ConfigUtil.getConfig("playergoaldata", plugin);
+        goalConfig = ConfigUtil.getConfig("goalconfig", plugin);
+        playerGoalData = ConfigUtil.getConfig("playergoaldata", plugin);
 
 
         registerCommand("modules",plugin).setExecutor(new ModulesCommand(plugin));

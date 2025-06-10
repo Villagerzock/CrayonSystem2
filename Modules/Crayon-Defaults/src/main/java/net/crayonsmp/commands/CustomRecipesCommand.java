@@ -2,6 +2,7 @@ package net.crayonsmp.commands;
 
 import net.crayonsmp.crafting.CustomCrafting;
 import net.crayonsmp.gui.FeywoodInventories;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -28,6 +29,7 @@ public class CustomRecipesCommand implements TabExecutor {
                         crafting.sendRecipe(commandSender);
                     }
             }
+          
         }else {
             if (commandSender instanceof Player player){
                 player.openInventory(FeywoodInventories.feywoodTable());
