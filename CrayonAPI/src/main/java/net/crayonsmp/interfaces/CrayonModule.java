@@ -3,7 +3,6 @@ package net.crayonsmp.interfaces;
 
 import dev.turingcomplete.textcaseconverter.StandardTextCases;
 import dev.turingcomplete.textcaseconverter.StandardWordsSplitters;
-import dev.turingcomplete.textcaseconverter.TextCase;
 import net.crayonsmp.CrayonAPI;
 import net.crayonsmp.PluginProvider;
 import net.crayonsmp.crafting.CustomCrafting;
@@ -24,13 +23,13 @@ public interface CrayonModule {
     }
     default String getAuthor(){return "";}
     String getVersion();
-    default void addCraftingTypes(){}
+    default CustomCrafting.CustomCraftingType<?>[] getCraftingTypes(){return new CustomCrafting.CustomCraftingType[]{};}
     default void onLoad(CrayonAPI api) {} // oder einfach kein Parameter
     <API extends Plugin & CrayonAPI> void onEnable(API plugin);
     default void onDisable() {}
-    default void addCustomCraftingType(String name, CustomCrafting.CustomCraftingType<?> type){
-        PluginProvider.plugin.getLogger().info("Adding Custom Type: " + getID() + ":" + name);
-        CustomCrafting.TYPES.put(getID() + ":" + name, type);
+    default void addCustomCraftingType(CustomCrafting.CustomCraftingType<?> type){
+        PluginProvider.plugin.getLogger().info("Adding Custom Type: " + getID() + ":" + type.getID());
+        CustomCrafting.TYPES.put(getID() + ":" + type.getID(), type);
     }
     default PluginCommand registerCommand(String name, Plugin plugin) {
         try {
