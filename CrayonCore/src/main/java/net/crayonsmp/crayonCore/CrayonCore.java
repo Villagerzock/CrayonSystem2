@@ -3,11 +3,13 @@ package net.crayonsmp.crayonCore;
 import net.crayonsmp.CrayonAPI;
 import net.crayonsmp.PluginProvider;
 import net.crayonsmp.crafting.CustomCrafting;
+import net.crayonsmp.gui.InventoryBuilder;
 import net.crayonsmp.interfaces.CrayonGoalService;
 import net.crayonsmp.interfaces.CrayonModule;
 import net.crayonsmp.utils.ChatUtil;
 import net.crayonsmp.utils.config.ConfigUtil;
 import net.crayonsmp.utils.config.SConfig;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
 
@@ -29,6 +31,7 @@ public class CrayonCore extends JavaPlugin implements CrayonAPI {
 
         getLogger().info("Enabling CrayonCore...");
         getLogger().info("Number of loaded modules to enable: " + loadedModules.size());
+        Bukkit.getPluginManager().registerEvents(new InventoryBuilder.InventoryListener(),this);
 
         if (loadedModules.isEmpty()) {
             getLogger().warning("No modules were loaded successfully. Check previous logs for errors during onLoad.");
