@@ -15,4 +15,9 @@ public class Item implements InventoryWidget {
     public boolean onClicked(InventoryClickEvent e) {
         return false;
     }
+
+    @Override
+    public ItemStack getDefault() {
+        return icon;
+    }
 }

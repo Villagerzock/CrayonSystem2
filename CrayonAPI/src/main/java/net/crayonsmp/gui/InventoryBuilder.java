@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
@@ -40,19 +41,30 @@ public class InventoryBuilder {
         return this;
     }
     public Inventory build(){
+        Inventory inventory;
         if (type == null){
-            return Bukkit.createInventory(new BuiltInventoryHolder(this),9 * rowAmount,title);
+            inventory = Bukkit.createInventory(new BuiltInventoryHolder(this),9 * rowAmount,title);
         }else {
-            return Bukkit.createInventory(new BuiltInventoryHolder(this),type,title);
+            inventory = Bukkit.createInventory(new BuiltInventoryHolder(this),type,title);
         }
+        widgets.forEach((slot,widget)->{
+            if (widget.getDefault() != null){
+                inventory.setItem(slot,widget.getDefault());
+            }
+        });
+        return inventory;
     }
     public static class InventoryListener implements Listener {
         @EventHandler
         public void onSlotClickedEvent(InventoryClickEvent e){
+            if (e.getInventory().getHolder() instanceof BuiltInventoryHolder holder && e.isShiftClick()) {
+                e.setCancelled(true);
+                return;
+            }
             if (e.getClickedInventory().getHolder() instanceof BuiltInventoryHolder holder){
                 InventoryBuilder builder = holder.getBuilder();
                 if (builder.widgets.containsKey(e.getSlot())){
-                    e.setCancelled(builder.widgets.get(e.getSlot()).onClicked(e));
+                    e.setCancelled(!builder.widgets.get(e.getSlot()).onClicked(e));
                 }else {
                     e.setCancelled(true);
                 }

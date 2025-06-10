@@ -25,13 +25,16 @@ public class ItemBuilder {
             if (idSplitted.length == 1){
                 itemID = idSplitted[1];
             }
-            return new ItemBuilder().setMeterial(Material.matchMaterial(id)).build();
+            return new ItemBuilder().setMaterial(Material.matchMaterial(id)).build();
         }else {
 
             return NexoItems.itemFromId(idSplitted[1]).build();
         }
     }
-    public ItemBuilder setMeterial(Material material) {
+    public ItemBuilder(){
+        itemMeta = new ItemStack(Material.AIR).getItemMeta();
+    }
+    public ItemBuilder setMaterial(Material material) {
         item = new ItemStack(material);
         itemMeta = item.getItemMeta();
         return this;

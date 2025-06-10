@@ -80,7 +80,7 @@ public class GoalMenuListener implements Listener {
                     if (Goalinv.getSelectetPlaceholder() != GoalType.good) {
                         Goalinv.setSelectetPlaceholder(GoalType.good);
                         GoalMenu.setDefaultModelData(Goalinv); // Resets all to default (unselected)
-                        inv.setItem(0, new ItemBuilder().setMeterial(Material.IRON_NUGGET).sethidetooltip(true).setCustomModelData(2001).build());
+                        inv.setItem(0, new ItemBuilder().setMaterial(Material.IRON_NUGGET).sethidetooltip(true).setCustomModelData(2001).build());
                         Goalinv.setSelectetPrimaryMagic(null);
                         Goalinv.setSelectetSecondaryMagic(null);
                         GoalMenu.setSelectetGoal(Goalinv); // This will populate the main content
@@ -92,7 +92,7 @@ public class GoalMenuListener implements Listener {
                     if (Goalinv.getSelectetPlaceholder() != GoalType.neutral) {
                         Goalinv.setSelectetPlaceholder(GoalType.neutral);
                         GoalMenu.setDefaultModelData(Goalinv); // Resets all to default
-                        inv.setItem(3, new ItemBuilder().setMeterial(Material.IRON_NUGGET).sethidetooltip(true).setCustomModelData(2002).build());
+                        inv.setItem(3, new ItemBuilder().setMaterial(Material.IRON_NUGGET).sethidetooltip(true).setCustomModelData(2002).build());
                         Goalinv.setSelectetPrimaryMagic(null);
                         Goalinv.setSelectetSecondaryMagic(null);
                         GoalMenu.setSelectetGoal(Goalinv);
@@ -104,7 +104,7 @@ public class GoalMenuListener implements Listener {
                     if (Goalinv.getSelectetPlaceholder() != GoalType.bad) {
                         Goalinv.setSelectetPlaceholder(GoalType.bad);
                         GoalMenu.setDefaultModelData(Goalinv); // Resets all to default
-                        inv.setItem(6, new ItemBuilder().setMeterial(Material.IRON_NUGGET).sethidetooltip(true).setCustomModelData(2003).build());
+                        inv.setItem(6, new ItemBuilder().setMaterial(Material.IRON_NUGGET).sethidetooltip(true).setCustomModelData(2003).build());
                         Goalinv.setSelectetPrimaryMagic(null);
                         Goalinv.setSelectetSecondaryMagic(null);
                         GoalMenu.setSelectetGoal(Goalinv);

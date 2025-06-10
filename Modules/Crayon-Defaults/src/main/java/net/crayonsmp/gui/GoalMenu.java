@@ -36,7 +36,7 @@ public class GoalMenu {
 
         goalinv.setSelectetPlaceholder(GoalType.good);
         setDefaultModelData(goalinv); // Resets all to default (unselected)
-        inv.setItem(0, new ItemBuilder().setMeterial(Material.IRON_NUGGET).setTitle("§r" + goalinv.getGoodPlaceholder().getGoal().getName()).setCustomModelData(2001).build());
+        inv.setItem(0, new ItemBuilder().setMaterial(Material.IRON_NUGGET).setTitle("§r" + goalinv.getGoodPlaceholder().getGoal().getName()).setCustomModelData(2001).build());
         setSelectetGoal(goalinv); // This will populate the main content based on the selected goal type
 
         player.openInventory(inv); // Inventar jetzt öffnen
@@ -44,7 +44,7 @@ public class GoalMenu {
 
     private static ItemStack generateGoalItem(PlayerGoalPlaceholder playerGoalPlaceholder) {
         ItemBuilder itemBuilder = new ItemBuilder();
-        itemBuilder.setMeterial(Material.IRON_NUGGET);
+        itemBuilder.setMaterial(Material.IRON_NUGGET);
         itemBuilder.setTitle("§r" + playerGoalPlaceholder.getGoal().getName());
 
         List<String> lore = new ArrayList<>(playerGoalPlaceholder.getGoal().getDescription());
@@ -58,7 +58,7 @@ public class GoalMenu {
 
     public static ItemStack generateMagicItems(Magic magic, int customModelData){
         ItemBuilder itemBuilder = new ItemBuilder();
-        itemBuilder.setMeterial(Material.IRON_NUGGET);
+        itemBuilder.setMaterial(Material.IRON_NUGGET);
         itemBuilder.setTitle("§r" + magic.getName());
 
         List<String> lore = new ArrayList<>();
@@ -138,19 +138,19 @@ public class GoalMenu {
     public static void setDefaultModelData(GoalInventory ginv){
         Inventory inv = ginv.getInv();
         for (int i = 0; i < 3; i++) {
-            inv.setItem(i, new ItemBuilder().setMeterial(Material.IRON_NUGGET).setTitle("§r" + ginv.getGoodPlaceholder().getGoal().getName()).setCustomModelData(1000).build());
+            inv.setItem(i, new ItemBuilder().setMaterial(Material.IRON_NUGGET).setTitle("§r" + ginv.getGoodPlaceholder().getGoal().getName()).setCustomModelData(1000).build());
         }
 
         for (int i = 3; i < 6; i++) {
-            inv.setItem(i, new ItemBuilder().setMeterial(Material.IRON_NUGGET).setTitle("§r" + ginv.getNeutralPlaceholder().getGoal().getName()).setCustomModelData(1000).build());
+            inv.setItem(i, new ItemBuilder().setMaterial(Material.IRON_NUGGET).setTitle("§r" + ginv.getNeutralPlaceholder().getGoal().getName()).setCustomModelData(1000).build());
         }
 
         for (int i = 6; i < 9; i++) {
-            inv.setItem(i, new ItemBuilder().setMeterial(Material.IRON_NUGGET).setTitle("§r" + ginv.getBadPlaceholder().getGoal().getName()).setCustomModelData(1000).build());
+            inv.setItem(i, new ItemBuilder().setMaterial(Material.IRON_NUGGET).setTitle("§r" + ginv.getBadPlaceholder().getGoal().getName()).setCustomModelData(1000).build());
         }
 
-        inv.setItem(0, new ItemBuilder().setMeterial(Material.IRON_NUGGET).setTitle("§r" + ginv.getGoodPlaceholder().getGoal().getName()).setCustomModelData(1001).build());
-        inv.setItem(3, new ItemBuilder().setMeterial(Material.IRON_NUGGET).setTitle("§r" + ginv.getNeutralPlaceholder().getGoal().getName()).setCustomModelData(1002).build());
-        inv.setItem(6, new ItemBuilder().setMeterial(Material.IRON_NUGGET).setTitle("§r" + ginv.getBadPlaceholder().getGoal().getName()).setCustomModelData(1003).build());
+        inv.setItem(0, new ItemBuilder().setMaterial(Material.IRON_NUGGET).setTitle("§r" + ginv.getGoodPlaceholder().getGoal().getName()).setCustomModelData(1001).build());
+        inv.setItem(3, new ItemBuilder().setMaterial(Material.IRON_NUGGET).setTitle("§r" + ginv.getNeutralPlaceholder().getGoal().getName()).setCustomModelData(1002).build());
+        inv.setItem(6, new ItemBuilder().setMaterial(Material.IRON_NUGGET).setTitle("§r" + ginv.getBadPlaceholder().getGoal().getName()).setCustomModelData(1003).build());
     }
 }

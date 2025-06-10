@@ -25,4 +25,9 @@ public class Button implements InventoryWidget {
         onClicked.accept(this);
         return false;
     }
+
+    @Override
+    public ItemStack getDefault() {
+        return icon;
+    }
 }
