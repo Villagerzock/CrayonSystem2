@@ -1,6 +1,6 @@
 package net.crayonsmp.services;
 
-import net.crayonsmp.Main;
+import net.crayonsmp.CrayonDefault;
 import net.crayonsmp.enums.GoalType;
 import net.crayonsmp.utils.goal.*;
 import org.bukkit.Bukkit;
@@ -189,8 +189,8 @@ public class GoalService {
 
     public static void addPlayerGoalData(String uuid, PlayerGoal playerGoal) {
         PlayerGoalData.put(uuid, playerGoal);
-        Main.PlayerGoalData.set("playergoals." + uuid, playerGoal);
-        Main.PlayerGoalData.save();
+        CrayonDefault.playerGoalData.set("playergoals." + uuid, playerGoal);
+        CrayonDefault.playerGoalData.save();
 
         Player p = Bukkit.getPlayer(UUID.fromString(uuid));
 
@@ -241,8 +241,8 @@ public class GoalService {
 
     public static void removePlayerGoalData(String uuid) {
         PlayerGoalData.remove(uuid);
-        Main.PlayerGoalData.set("playergoals." + uuid, null);
-        Main.PlayerGoalData.save();
+        CrayonDefault.playerGoalData.set("playergoals." + uuid, null);
+        CrayonDefault.playerGoalData.save();
     }
 
     public static boolean hasPlayerGoalData(Player p) {
