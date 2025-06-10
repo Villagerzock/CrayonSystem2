@@ -41,5 +41,10 @@ public class CrushingFactoryRecipe extends CustomCrafting {
             ItemStack output = ItemBuilder.makeFromID(object.get("output").getAsString());
             return new CrushingFactoryRecipe(name,input,output);
         }
+
+        @Override
+        public String getID() {
+            return "crushing_factory";
+        }
     }
 }

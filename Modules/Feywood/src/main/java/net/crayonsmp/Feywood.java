@@ -1,5 +1,6 @@
 package net.crayonsmp;
 
+import net.crayonsmp.crafting.CustomCrafting;
 import net.crayonsmp.interfaces.CrayonModule;
 import net.crayonsmp.recipes.FeywoodTableRecipe;
 import org.bukkit.Bukkit;
@@ -26,8 +27,10 @@ public class Feywood implements CrayonModule {
     }
 
     @Override
-    public void addCraftingTypes() {
-        addCustomCraftingType("feywood_table",new FeywoodTableRecipe.Type());
+    public CustomCrafting.CustomCraftingType<?>[] getCraftingTypes() {
+        return new CustomCrafting.CustomCraftingType[]{
+                new FeywoodTableRecipe.Type()
+        };
     }
     @Override
     public String getID() {

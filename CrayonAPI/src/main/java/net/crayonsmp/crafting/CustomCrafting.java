@@ -88,5 +88,6 @@ public abstract class CustomCrafting {
             CRAFTINGS.add(read(object,name));
         }
         public abstract T read(JsonObject object,String name);
+        public abstract String getID();
     }
 }
