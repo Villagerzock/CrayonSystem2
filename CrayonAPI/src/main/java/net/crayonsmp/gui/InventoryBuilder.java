@@ -1,25 +1,22 @@
 package net.crayonsmp.gui;
 
+import net.crayonsmp.gui.widgets.Slot;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.ClickType;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.Inventory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class InventoryBuilder {
     private int rowAmount = 3;
     private InventoryType type = null;
     private Component title = Component.empty();
     private final Map<Integer,InventoryWidget> widgets = new HashMap<>();
+    private Inventory builtInventory = null;
     public InventoryBuilder setTitle(Component title){
         this.title = title;
         return this;
@@ -34,25 +31,52 @@ public class InventoryBuilder {
     }
     public InventoryBuilder addWidget(int slot,InventoryWidget widget){
         widgets.put(slot,widget);
+        update(slot);
         return this;
     }
     public InventoryBuilder addWidget(int x,int y,InventoryWidget widget){
-        widgets.put(y * 9 + x,widget);
-        return this;
+        return addWidget(y * 9 + x,widget);
     }
-    public Inventory build(){
-        Inventory inventory;
-        if (type == null){
-            inventory = Bukkit.createInventory(new BuiltInventoryHolder(this),9 * rowAmount,title);
-        }else {
-            inventory = Bukkit.createInventory(new BuiltInventoryHolder(this),type,title);
-        }
+    public InventoryBuilder clearWidgets(Class<? extends InventoryWidget> type){
         widgets.forEach((slot,widget)->{
-            if (widget.getDefault() != null){
-                inventory.setItem(slot,widget.getDefault());
+            if (type.isInstance(widget)){
+                widgets.remove(slot);
+                update(slot);
             }
         });
-        return inventory;
+        return this;
+    }
+    public void update(int x, int y){
+        update(y * 9 + x);
+    }
+    public void update(int slot){
+        if (builtInventory == null){
+            return;
+        }
+        if (widgets.containsKey(slot)){
+            if (widgets.get(slot).getDefault() != null){
+                builtInventory.setItem(slot,widgets.get(slot).getDefault());
+            }
+        }
+    }
+    public Inventory build(){
+        if (builtInventory == null){
+            Inventory inventory;
+            if (type == null){
+                inventory = Bukkit.createInventory(new BuiltInventoryHolder(this),9 * rowAmount,title);
+            }else {
+                inventory = Bukkit.createInventory(new BuiltInventoryHolder(this),type,title);
+            }
+            widgets.forEach((slot,widget)->{
+                if (widget.getDefault() != null){
+                    inventory.setItem(slot,widget.getDefault());
+                }
+            });
+            builtInventory = inventory;
+            return inventory;
+        }else {
+            return builtInventory;
+        }
     }
     public static class InventoryListener implements Listener {
         @EventHandler
@@ -70,5 +94,19 @@ public class InventoryBuilder {
                 }
             }
         }
+        public void onInventoryMoved(InventoryDragEvent e){
+
+        }
+        @EventHandler
+        public void onInventoryClosed(InventoryCloseEvent e){
+            if (e.getInventory().getHolder() instanceof BuiltInventoryHolder holder){
+                holder.getBuilder().widgets.forEach((slot,widget)->{
+                    if (widget instanceof Slot slotWidget && !slotWidget.isOutput()){
+                        e.getPlayer().getInventory().addItem(Objects.requireNonNull(e.getInventory().getItem(slot)));
+                    }
+                });
+            }
+        }
+
     }
 }
