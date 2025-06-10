@@ -1,10 +1,14 @@
 package net.crayonsmp.interfaces;
 
-import it.unimi.dsi.fastutil.ints.IntArrayFIFOQueue;
+import lombok.Getter;
+import lombok.Setter;
+import net.crayonsmp.enums.MISBlockType;
 import org.bukkit.block.Block;
 
+
 public interface MISBlock extends Block {
-    int getMISNetworkID();
-    int getMISChennel();
-    boolean isBlockOnline();
+    int MISNetworkID();
+    int MISChennel();
+    MISBlockType MISBlockType();
+    boolean BlockOnline();
 }

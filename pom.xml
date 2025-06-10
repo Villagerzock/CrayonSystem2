@@ -18,7 +18,6 @@
         <module>Modules/Feywood</module>
         <module>Modules/Villagerzock</module>
         <module>Modules/Tjorven</module>
-        <module>Modules/MagicalItemStorage</module>
     </modules>
 
 
