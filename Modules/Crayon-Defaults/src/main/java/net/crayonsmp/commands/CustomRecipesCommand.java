@@ -1,6 +1,8 @@
 package net.crayonsmp.commands;
 
 import net.crayonsmp.crafting.CustomCrafting;
+import net.crayonsmp.gui.FeywoodInventories;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomRecipesCommand implements TabExecutor {
+
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String @NotNull [] strings) {
         if (strings.length >= 1){
@@ -26,6 +29,11 @@ public class CustomRecipesCommand implements TabExecutor {
                         commandSender.sendMessage("The Recipe looks the Following:");
                         crafting.sendRecipe(commandSender);
                     }
+            }
+          
+        }else {
+            if (commandSender instanceof Player player){
+                player.openInventory(FeywoodInventories.feywoodTable());
             }
         }
         return true;

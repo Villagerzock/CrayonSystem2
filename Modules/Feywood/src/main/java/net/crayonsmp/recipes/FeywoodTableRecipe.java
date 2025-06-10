@@ -57,5 +57,10 @@ public class FeywoodTableRecipe extends CustomCrafting {
             }
             return new FeywoodTableRecipe(input0,input1,possibleOutputs,name);
         }
+
+        @Override
+        public String getID() {
+            return "feywood_table";
+        }
     }
 }

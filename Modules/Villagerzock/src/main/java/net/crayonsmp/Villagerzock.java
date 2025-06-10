@@ -1,6 +1,8 @@
 package net.crayonsmp;
 
+import net.crayonsmp.crafting.CustomCrafting;
 import net.crayonsmp.interfaces.CrayonModule;
+import net.crayonsmp.recipes.CrushingFactoryRecipe;
 import org.bukkit.plugin.Plugin;
 
 public class Villagerzock implements CrayonModule {
@@ -18,6 +20,13 @@ public class Villagerzock implements CrayonModule {
     @Override
     public String getAuthor() {
         return "Villagerzock";
+    }
+
+    @Override
+    public CustomCrafting.CustomCraftingType<?>[] getCraftingTypes() {
+        return new CustomCrafting.CustomCraftingType[]{
+                new CrushingFactoryRecipe.Type()
+        };
     }
 
     @Override

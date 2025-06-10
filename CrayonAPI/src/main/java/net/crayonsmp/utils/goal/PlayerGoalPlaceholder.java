@@ -11,7 +11,6 @@ public class PlayerGoalPlaceholder {
 
     private final List<Magic> magicSecondaryList;
 
-
     public PlayerGoalPlaceholder(Goal goal, List<Magic> MagicPrimeryList, List<Magic> MagicSecondaryList) {
         if (goal == null) {
             throw new IllegalArgumentException("PlayerGoal goal cannot be null.");
@@ -30,9 +29,11 @@ public class PlayerGoalPlaceholder {
     public Goal getGoal() {
         return goal;
     }
+
     public List<Magic> getMagicPrimeryList() {
         return magicPrimeryList;
     }
+
     public List<Magic> getMagicSecondaryList() {
         return magicSecondaryList;
     }
