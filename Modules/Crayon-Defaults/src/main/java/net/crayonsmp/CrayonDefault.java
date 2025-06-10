@@ -45,7 +45,7 @@ public class CrayonDefault implements CrayonModule {
         registerCommand("debugcrayon", plugin).setExecutor(new DebugCommand(plugin));
         registerCommand("goal", plugin).setExecutor(new GoalCommand());
         registerCommand("goalset", plugin).setExecutor(new SetGoalCommand());
-        registerCommand("removegoal", plugin).setExecutor(new removeGoalCommand());
+        registerCommand("removegoal", plugin).setExecutor(new RemoveGoalCommand());
         registerCommand("crayonreload", plugin).setExecutor(new CrayonReloadCommand());
         registerCommand("magicinfo", plugin).setExecutor(new MagicInfoCommand());
         registerCommand("cr",plugin).setExecutor(new CustomRecipesCommand());

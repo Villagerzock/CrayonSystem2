@@ -109,7 +109,7 @@ public class BlockTeleport implements Listener {
             case SOUTH -> yaw = 0f;
             case WEST -> yaw = 90f;
             case EAST -> yaw = -90f;
-            default -> yaw = player.getLocation().getYaw(); // keep current if UP/DOWN
+            default -> yaw = player.getLocation().getYaw();
         }
 
         finalLocation.setYaw(yaw);

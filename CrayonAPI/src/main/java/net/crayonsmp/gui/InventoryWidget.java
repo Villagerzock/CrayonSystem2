@@ -4,8 +4,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 public interface InventoryWidget {
+
     boolean onClicked(InventoryClickEvent e);
-    default ItemStack getDefault(){
+
+    default ItemStack getDefault() {
         return null;
     }
 }

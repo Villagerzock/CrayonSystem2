@@ -5,6 +5,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class Item implements InventoryWidget {
+
     private final ItemStack icon;
 
     public Item(ItemStack icon) {
