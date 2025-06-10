@@ -1,6 +1,10 @@
 package net.crayonsmp.objects.blocks.io;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.crayonsmp.interfaces.MISBlock;
 
-public abstract class MagicalImport implements MISBlock {
+@Setter
+@Getter
+public abstract class MagicalImport extends MISBlock {
 }

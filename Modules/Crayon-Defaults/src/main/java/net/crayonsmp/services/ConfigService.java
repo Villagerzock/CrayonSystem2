@@ -46,15 +46,15 @@ public class ConfigService {
 
         HashMap<String, Goal> goals = new HashMap<>();
         config.getConfigurationSection("goals.good").getKeys(false).forEach(key -> {
-            Goal goal = new Goal(key, GoalType.good, config.getString("goals.good." + key + ".name"), config.getString("goals.good." + key + ".id"), config.getStringList("goals.good." + key + ".description"), config.getStringList("goals.good." + key + ".magics.primary"), config.getStringList("goals.good." + key + ".magics.secondary"));
+            Goal goal = new Goal(key, GoalType.GOOD, config.getString("goals.good." + key + ".name"), config.getString("goals.good." + key + ".id"), config.getStringList("goals.good." + key + ".description"), config.getStringList("goals.good." + key + ".magics.primary"), config.getStringList("goals.good." + key + ".magics.secondary"));
             goals.put(goal.getID(), goal);
         });
         config.getConfigurationSection("goals.neutral").getKeys(false).forEach(key -> {
-            Goal goal = new Goal(key, GoalType.neutral, config.getString("goals.neutral." + key + ".name"), config.getString("goals.neutral." + key + ".id"), config.getStringList("goals.neutral." + key + ".description"), config.getStringList("goals.neutral." + key + ".magics.primary"), config.getStringList("goals.neutral." + key + ".magics.secondary"));
+            Goal goal = new Goal(key, GoalType.NEUTRAL, config.getString("goals.neutral." + key + ".name"), config.getString("goals.neutral." + key + ".id"), config.getStringList("goals.neutral." + key + ".description"), config.getStringList("goals.neutral." + key + ".magics.primary"), config.getStringList("goals.neutral." + key + ".magics.secondary"));
             goals.put(goal.getID(), goal);
         });
         config.getConfigurationSection("goals.bad").getKeys(false).forEach(key -> {
-            Goal goal = new Goal(key, GoalType.bad, config.getString("goals.bad." + key + ".name"), config.getString("goals.bad." + key + ".id"), config.getStringList("goals.bad." + key + ".description"), config.getStringList("goals.bad." + key + ".magics.primary"), config.getStringList("goals.bad." + key + ".magics.secondary"));
+            Goal goal = new Goal(key, GoalType.BAD, config.getString("goals.bad." + key + ".name"), config.getString("goals.bad." + key + ".id"), config.getStringList("goals.bad." + key + ".description"), config.getStringList("goals.bad." + key + ".magics.primary"), config.getStringList("goals.bad." + key + ".magics.secondary"));
             goals.put(goal.getID(), goal);
         });
 

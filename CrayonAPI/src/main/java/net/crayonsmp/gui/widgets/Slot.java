@@ -9,10 +9,11 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class Slot implements InventoryWidget {
-    private final Consumer<InventoryClickEvent> onClicked;
-    public Slot(Consumer<InventoryClickEvent> onClicked){
-        this.onClicked = onClicked;
+    private final Consumer<InventoryClickEvent> onClick;
+    public Slot(Consumer<InventoryClickEvent> onClick){
+        this.onClick = onClick;
     }
+
     @Override
     public boolean onClicked(InventoryClickEvent e) {
         onClicked.accept(e);
