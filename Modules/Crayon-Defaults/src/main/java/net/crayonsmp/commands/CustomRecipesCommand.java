@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomRecipesCommand implements TabExecutor {
+
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String @NotNull [] strings) {
         if (strings.length >= 1){

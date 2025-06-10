@@ -7,7 +7,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class removeGoalCommand implements CommandExecutor {
+public class RemoveGoalCommand implements CommandExecutor {
+
     @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
 
@@ -17,7 +18,7 @@ public class removeGoalCommand implements CommandExecutor {
             return true;
         }
 
-        if (args.length == 1){
+        if (args.length == 1) {
             if (taget != null) {
                 GoalService.removePlayerGoalData(taget.getUniqueId().toString());
                 taget.sendMessage("Your goal has been removed.");

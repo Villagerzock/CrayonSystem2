@@ -3,8 +3,8 @@ package net.crayonsmp.utils.goal;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 
-import java.util.Collections; // Für immutable Listen
-import java.util.ArrayList;   // Für defensive Kopie
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -17,9 +17,9 @@ public class Magic implements ConfigurationSerializable {
 
     private final String name;
 
-    private final java.util.List<String> description;
+    private final List<String> description;
 
-    private final java.util.List<String> theme;
+    private final List<String> theme;
 
     public Magic(String id, String name, java.util.List<String> description, java.util.List<String> theme) {
         if (id == null || id.trim().isEmpty()) {
@@ -42,10 +42,7 @@ public class Magic implements ConfigurationSerializable {
         if (this.id == null || this.id.trim().isEmpty()) {
             throw new IllegalArgumentException("Deserialized Magic 'id' cannot be null or empty.");
         }
-        if (this.description == null) {
-        }
     }
-
 
     @Override
     public Map<String, Object> serialize() {
@@ -65,18 +62,22 @@ public class Magic implements ConfigurationSerializable {
         return name;
     }
 
-    public java.util.List<String> getDescription() {
+    public List<String> getDescription() {
         return description;
     }
 
-    public java.util.List<String> getTheme() {
+    public List<String> getTheme() {
         return theme;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Magic magic = (Magic) o;
         return id.equals(magic.id);
     }
@@ -89,10 +90,8 @@ public class Magic implements ConfigurationSerializable {
     @Override
     public String toString() {
         return "Magic{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                '}';
+               "id='" + id + '\'' +
+               ", name='" + name + '\'' +
+               '}';
     }
-
-
 }

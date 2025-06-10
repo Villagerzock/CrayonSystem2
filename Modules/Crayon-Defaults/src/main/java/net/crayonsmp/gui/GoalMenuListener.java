@@ -36,17 +36,17 @@ public class GoalMenuListener implements Listener {
         if(GoalMenu.goalInventories.containsKey(p) && !GoalService.hasPlayerGoalData(p)){
             GoalInventory goalInventory = GoalMenu.goalInventories.get(p);
             if (goalInventory.selectetPlaceholder != null && goalInventory.selectetPrimaryMagic != null && goalInventory.selectetSecondaryMagic != null){
-                if (goalInventory.selectetPlaceholder.equals(GoalType.good)) {
+                if (goalInventory.selectetPlaceholder.equals(GoalType.GOOD)) {
                     GoalService.addPlayerGoalData(p.getUniqueId().toString(), new PlayerGoal(goalInventory.getGoodPlaceholder().getGoal(), goalInventory.selectetPrimaryMagic, goalInventory.selectetSecondaryMagic));
                     GoalMenu.goalInventories.remove(p);
                     p.sendMessage("You can always look at your goal with /goal");
                 }
-                else if (goalInventory.selectetPlaceholder.equals(GoalType.neutral)) {
+                else if (goalInventory.selectetPlaceholder.equals(GoalType.NEUTRAL)) {
                     GoalService.addPlayerGoalData(p.getUniqueId().toString(), new PlayerGoal(goalInventory.getNeutralPlaceholder().getGoal(), goalInventory.selectetPrimaryMagic, goalInventory.selectetSecondaryMagic));
                     GoalMenu.goalInventories.remove(p);
                     p.sendMessage("You can always look at your goal with /goal");
                 }
-                else if (goalInventory.selectetPlaceholder.equals(GoalType.bad)) {
+                else if (goalInventory.selectetPlaceholder.equals(GoalType.BAD)) {
                     GoalService.addPlayerGoalData(p.getUniqueId().toString(), new PlayerGoal(goalInventory.getBadPlaceholder().getGoal(), goalInventory.selectetPrimaryMagic, goalInventory.selectetSecondaryMagic));
                     GoalMenu.goalInventories.remove(p);
                     p.sendMessage("You can always look at your goal with /goal");
@@ -77,8 +77,8 @@ public class GoalMenuListener implements Listener {
                 int clickedSlot = event.getSlot();
 
                 if (clickedSlot >= 0 && clickedSlot <= 2) {
-                    if (Goalinv.getSelectetPlaceholder() != GoalType.good) {
-                        Goalinv.setSelectetPlaceholder(GoalType.good);
+                    if (Goalinv.getSelectetPlaceholder() != GoalType.GOOD) {
+                        Goalinv.setSelectetPlaceholder(GoalType.GOOD);
                         GoalMenu.setDefaultModelData(Goalinv); // Resets all to default (unselected)
                         inv.setItem(0, new ItemBuilder().setMaterial(Material.IRON_NUGGET).sethidetooltip(true).setCustomModelData(2001).build());
                         Goalinv.setSelectetPrimaryMagic(null);
@@ -89,8 +89,8 @@ public class GoalMenuListener implements Listener {
                     }
                 }
                 else if (clickedSlot >= 3 && clickedSlot <= 5) {
-                    if (Goalinv.getSelectetPlaceholder() != GoalType.neutral) {
-                        Goalinv.setSelectetPlaceholder(GoalType.neutral);
+                    if (Goalinv.getSelectetPlaceholder() != GoalType.NEUTRAL) {
+                        Goalinv.setSelectetPlaceholder(GoalType.NEUTRAL);
                         GoalMenu.setDefaultModelData(Goalinv); // Resets all to default
                         inv.setItem(3, new ItemBuilder().setMaterial(Material.IRON_NUGGET).sethidetooltip(true).setCustomModelData(2002).build());
                         Goalinv.setSelectetPrimaryMagic(null);
@@ -101,8 +101,8 @@ public class GoalMenuListener implements Listener {
                     }
                 }
                 else if (clickedSlot >= 6 && clickedSlot <= 8) {
-                    if (Goalinv.getSelectetPlaceholder() != GoalType.bad) {
-                        Goalinv.setSelectetPlaceholder(GoalType.bad);
+                    if (Goalinv.getSelectetPlaceholder() != GoalType.BAD) {
+                        Goalinv.setSelectetPlaceholder(GoalType.BAD);
                         GoalMenu.setDefaultModelData(Goalinv); // Resets all to default
                         inv.setItem(6, new ItemBuilder().setMaterial(Material.IRON_NUGGET).sethidetooltip(true).setCustomModelData(2003).build());
                         Goalinv.setSelectetPrimaryMagic(null);
@@ -115,15 +115,15 @@ public class GoalMenuListener implements Listener {
                 else if (clickedSlot == 22) {
                     Magic magic = null;
                         switch (Goalinv.selectetPlaceholder){
-                            case good:
+                            case GOOD:
                                 magic = Goalinv.getGoodPlaceholder().getMagicPrimeryList().get(0);
                                 GoalMenu.resetPrimeryMagics(Goalinv.getInv(), Goalinv.getGoodPlaceholder());
                                 break;
-                            case neutral:
+                            case NEUTRAL:
                                 magic = Goalinv.getNeutralPlaceholder().getMagicPrimeryList().get(0);
                                 GoalMenu.resetPrimeryMagics(Goalinv.getInv(), Goalinv.getNeutralPlaceholder());
                                 break;
-                            case bad:
+                            case BAD:
                                 magic = Goalinv.getBadPlaceholder().getMagicPrimeryList().get(0);
                                 GoalMenu.resetPrimeryMagics(Goalinv.getInv(), Goalinv.getBadPlaceholder());
                                 break;
@@ -136,15 +136,15 @@ public class GoalMenuListener implements Listener {
                 else if (clickedSlot == 24) {
                     Magic magic = null;
                     switch (Goalinv.selectetPlaceholder){
-                        case good:
+                        case GOOD:
                             magic = Goalinv.getGoodPlaceholder().getMagicPrimeryList().get(1);
                             GoalMenu.resetPrimeryMagics(Goalinv.getInv(), Goalinv.getGoodPlaceholder());
                             break;
-                        case neutral:
+                        case NEUTRAL:
                             magic = Goalinv.getNeutralPlaceholder().getMagicPrimeryList().get(1);
                             GoalMenu.resetPrimeryMagics(Goalinv.getInv(), Goalinv.getNeutralPlaceholder());
                             break;
-                        case bad:
+                        case BAD:
                             magic = Goalinv.getBadPlaceholder().getMagicPrimeryList().get(1);
                             GoalMenu.resetPrimeryMagics(Goalinv.getInv(), Goalinv.getBadPlaceholder());
                             break;
@@ -157,15 +157,15 @@ public class GoalMenuListener implements Listener {
                 else if (clickedSlot == 26) {
                     Magic magic = null;
                     switch (Goalinv.selectetPlaceholder){
-                        case good:
+                        case GOOD:
                             magic = Goalinv.getGoodPlaceholder().getMagicPrimeryList().get(2);
                             GoalMenu.resetPrimeryMagics(Goalinv.getInv(), Goalinv.getGoodPlaceholder());
                             break;
-                        case neutral:
+                        case NEUTRAL:
                             magic = Goalinv.getNeutralPlaceholder().getMagicPrimeryList().get(2);
                             GoalMenu.resetPrimeryMagics(Goalinv.getInv(), Goalinv.getNeutralPlaceholder());
                             break;
-                        case bad:
+                        case BAD:
                             magic = Goalinv.getBadPlaceholder().getMagicPrimeryList().get(2);
                             GoalMenu.resetPrimeryMagics(Goalinv.getInv(), Goalinv.getBadPlaceholder());
                             break;
@@ -178,15 +178,15 @@ public class GoalMenuListener implements Listener {
                 else if (clickedSlot == 40) {
                     Magic magic = null;
                     switch (Goalinv.selectetPlaceholder){
-                        case good:
+                        case GOOD:
                             magic = Goalinv.getGoodPlaceholder().getMagicSecondaryList().get(0);
                             GoalMenu.resetSecondaryMagics(Goalinv.getInv(), Goalinv.getGoodPlaceholder());
                             break;
-                        case neutral:
+                        case NEUTRAL:
                             magic = Goalinv.getNeutralPlaceholder().getMagicSecondaryList().get(0);
                             GoalMenu.resetSecondaryMagics(Goalinv.getInv(), Goalinv.getNeutralPlaceholder());
                             break;
-                        case bad:
+                        case BAD:
                             magic = Goalinv.getBadPlaceholder().getMagicSecondaryList().get(0);
                             GoalMenu.resetSecondaryMagics(Goalinv.getInv(), Goalinv.getBadPlaceholder());
                             break;
@@ -199,15 +199,15 @@ public class GoalMenuListener implements Listener {
                 else if (clickedSlot == 42) {
                     Magic magic = null;
                     switch (Goalinv.selectetPlaceholder){
-                        case good:
+                        case GOOD:
                             magic = Goalinv.getGoodPlaceholder().getMagicSecondaryList().get(1);
                             GoalMenu.resetSecondaryMagics(Goalinv.getInv(), Goalinv.getGoodPlaceholder());
                             break;
-                        case neutral:
+                        case NEUTRAL:
                             magic = Goalinv.getNeutralPlaceholder().getMagicSecondaryList().get(1);
                             GoalMenu.resetSecondaryMagics(Goalinv.getInv(), Goalinv.getNeutralPlaceholder());
                             break;
-                        case bad:
+                        case BAD:
                             magic = Goalinv.getBadPlaceholder().getMagicSecondaryList().get(1);
                             GoalMenu.resetSecondaryMagics(Goalinv.getInv(), Goalinv.getBadPlaceholder());
                             break;

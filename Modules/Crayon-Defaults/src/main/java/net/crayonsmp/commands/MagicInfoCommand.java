@@ -1,9 +1,12 @@
 package net.crayonsmp.commands;
 
-import net.crayonsmp.utils.ChatUtil;
 import net.crayonsmp.services.GoalService;
+import net.crayonsmp.utils.ChatUtil;
 import net.crayonsmp.utils.goal.Magic;
-import org.bukkit.command.*; // Importiere alle nötigen Command-bezogenen Klassen
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.util.StringUtil;
 
 import java.util.ArrayList;
@@ -12,8 +15,9 @@ import java.util.List;
 import java.util.Set;
 
 public class MagicInfoCommand implements TabCompleter, CommandExecutor {
+
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String [] args) {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!command.getName().equalsIgnoreCase("magicinfo")) {
             return false;
         }
