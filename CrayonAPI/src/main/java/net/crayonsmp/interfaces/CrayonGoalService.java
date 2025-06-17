@@ -7,16 +7,21 @@ import net.crayonsmp.utils.goal.PlayerGoal;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
-import java.util.logging.Handler;
 
 public interface CrayonGoalService {
+
     HashMap<String, Goal> getGoals();
+
     HashMap<String, Magic> getMagics();
+
     HashMap<String, PlayerGoal> getPlayerGoals();
+
     HashMap<Player, GoalInventory> getGoalInventorys();
+
     Goal getGoalById(String goalId);
+
     Magic getMagicById(String magicId);
+
     PlayerGoal getPlayerGoalByUUID(UUID playerUUID);
 }

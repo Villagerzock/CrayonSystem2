@@ -1,9 +1,11 @@
 package net.crayonsmp.objects.blocks;
 
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import net.crayonsmp.interfaces.MISBlock;
 
-@RequiredArgsConstructor
-public abstract class MagicalDrive implements MISBlock {
+@Setter
+@Getter
+public abstract class MagicalDrive extends MISBlock {
 
 }

@@ -8,6 +8,7 @@ import net.crayonsmp.listeners.DebugListener;
 import net.crayonsmp.listeners.PlayerListener;
 import net.crayonsmp.services.ConfigService;
 import net.crayonsmp.services.DatapackService;
+import net.crayonsmp.services.Restart;
 import net.crayonsmp.utils.goal.Goal;
 import net.crayonsmp.utils.goal.Magic;
 import net.crayonsmp.utils.goal.PlayerGoal;
@@ -45,7 +46,7 @@ public class CrayonDefault implements CrayonModule {
         registerCommand("debugcrayon", plugin).setExecutor(new DebugCommand(plugin));
         registerCommand("goal", plugin).setExecutor(new GoalCommand());
         registerCommand("goalset", plugin).setExecutor(new SetGoalCommand());
-        registerCommand("removegoal", plugin).setExecutor(new removeGoalCommand());
+        registerCommand("removegoal", plugin).setExecutor(new RemoveGoalCommand());
         registerCommand("crayonreload", plugin).setExecutor(new CrayonReloadCommand());
         registerCommand("magicinfo", plugin).setExecutor(new MagicInfoCommand());
         registerCommand("cr",plugin).setExecutor(new CustomRecipesCommand());
@@ -58,15 +59,17 @@ public class CrayonDefault implements CrayonModule {
         datapackManager.setup();
 
         ConfigService.registergoalconfig();
-        scheduleDailyTasks(new CrayonReloadCommand());
+        scheduleDailyTasks();
     }
 
-    private void scheduleDailyTasks(CrayonReloadCommand reloadCommand) {
-        Scheduler scheduler = new Scheduler();
+    private void scheduleDailyTasks() {
+        Scheduler reload = new Scheduler();
+        reload.schedule("0 7,13,17,20,22 * * *", new CrayonReloadCommand());
+        reload.start();
 
-        scheduler.schedule("0 7,13,17,20,22 * * *", reloadCommand);
-
-        scheduler.start();
+        Scheduler restart = new Scheduler();
+        restart.schedule("0 3 * * *", new Restart());
+        restart.start();
     }
 
 

@@ -38,9 +38,11 @@ public class PlayerGoal implements ConfigurationSerializable {
         if (this.goal == null) {
             throw new IllegalArgumentException("Deserialized PlayerGoal 'goal' cannot be null.");
         }
+
         if (this.magicPrimery == null) {
             throw new IllegalArgumentException("Deserialized PlayerGoal 'magicPrimery' cannot be null.");
         }
+
         if (this.magicSecondary == null) {
             throw new IllegalArgumentException("Deserialized PlayerGoal 'magicSecondary' cannot be null.");
         }
@@ -58,9 +60,11 @@ public class PlayerGoal implements ConfigurationSerializable {
     public Goal getGoal() {
         return goal;
     }
+
     public Magic getMagicPrimery() {
         return magicPrimery;
     }
+
     public Magic getMagicSecondary() {
         return magicSecondary;
     }

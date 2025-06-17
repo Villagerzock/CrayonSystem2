@@ -1,7 +1,6 @@
 package net.crayonsmp.utils.config;
 
 
-
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;

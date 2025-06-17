@@ -19,24 +19,24 @@ public class ItemBuilder {
     ItemStack item;
     ItemMeta itemMeta;
 
-    public static ItemStack makeFromID(String id){
+    public ItemBuilder() {
+        itemMeta = new ItemStack(Material.AIR).getItemMeta();
+    }
+
+    public static ItemStack makeFromID(String id) {
         String[] idSplitted = id.split(":");
-        if (idSplitted.length == 0 || idSplitted[0].equals("minecraft")){
+        if (idSplitted.length == 0 || idSplitted[0].equals("minecraft")) {
             String itemID = idSplitted[0];
-            if (idSplitted.length == 1){
+            if (idSplitted.length == 1) {
                 itemID = idSplitted[1];
             }
             return new ItemBuilder().setMaterial(Material.matchMaterial(id)).build();
-        }else {
+        } else {
 
             return NexoItems.itemFromId(idSplitted[1]).build();
         }
     }
-  
-    public ItemBuilder(){
-        itemMeta = new ItemStack(Material.AIR).getItemMeta();
-    }
-  
+
     public ItemBuilder setMaterial(Material material) {
 
         item = new ItemStack(material);

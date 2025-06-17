@@ -34,13 +34,13 @@ public class GoalCommand implements CommandExecutor {
         Magic secondaryMagic = playerGoal.getMagicSecondary();
         String color = null;
         switch (goal.getGoalType()) {
-            case bad:
+            case BAD:
                 color = "<#a63851>";
                 break;
-            case good:
+            case GOOD:
                 color = "<#92b460>";
                 break;
-            case neutral:
+            case NEUTRAL:
                 color = "<#455f7f>";
                 break;
         }
@@ -48,13 +48,13 @@ public class GoalCommand implements CommandExecutor {
         if (goal != null) { // Defensive check, though Goal should ideally not be null if playerGoal is valid
             player.sendMessage(ChatUtil.format("<#f3d6ac>Goal: <#b4b4b4>" + goal.getName()));
             switch (goal.getGoalType()){
-                case bad:
+                case BAD:
                     player.sendMessage(ChatUtil.format("<#f3d6ac>Type: <glyph:bad_glyph_crayon>"));
                     break;
-                case good:
+                case GOOD:
                     player.sendMessage(ChatUtil.format("<#f3d6ac>Type: <glyph:good_glyph_crayon>"));
                     break;
-                case neutral:
+                case NEUTRAL:
                     player.sendMessage(ChatUtil.format("<#f3d6ac>Type: <glyph:neutral_glyph_crayon>"));
                     break;
             }
