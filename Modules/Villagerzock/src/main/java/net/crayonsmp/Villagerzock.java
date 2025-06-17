@@ -3,6 +3,7 @@ package net.crayonsmp;
 import net.crayonsmp.crafting.CustomCrafting;
 import net.crayonsmp.interfaces.CrayonModule;
 import net.crayonsmp.recipes.CrushingFactoryRecipe;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.plugin.Plugin;
 
 public class Villagerzock implements CrayonModule {
